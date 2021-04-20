@@ -1,6 +1,23 @@
-import { printLine } from './modules/print';
+import React from 'react';
+import { render } from 'react-dom';
+import Subtitles from './Subtitles';
 
-console.log('Content script works!');
-console.log('Must reload extension for modifications to take effect.');
+let subtitlesInjected = false;
 
-printLine("Using the 'printLine' function from the Print Module");
+// Wait for the popup message
+chrome.runtime.onMessage.addListener(function (msg) {
+  if (msg === 'activation' && !subtitlesInjected) {
+    // Inject the #movie-subtitles div!
+    const container = document.createElement('div');
+    container.id = 'movie-subtitles';
+    container.style =
+      'position: absolute; top: 0; background: transparent; width: 100%; height: 100%;';
+    document.querySelector('#movie_player').prepend(container);
+
+    // Display the subtitles
+    render(<Subtitles />, document.querySelector('#movie-subtitles'));
+
+    // Make sure only to inject the subtitles once!
+    subtitlesInjected = true;
+  }
+});

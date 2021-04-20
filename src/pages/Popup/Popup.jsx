@@ -3,6 +3,11 @@ import logo from '../../assets/img/logo.svg';
 import './Popup.css';
 
 const Popup = () => {
+  // Send a message to the content script
+  chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+    chrome.tabs.sendMessage(tab[0].id, 'activation');
+  });
+
   return (
     <div className="App">
       <header className="App-header">
