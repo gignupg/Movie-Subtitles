@@ -10,7 +10,7 @@ const Title = styled('h1')({
 
 const Icon = styled('img')({
   display: 'block',
-  margin: '30px auto 20px auto',
+  margin: '30px auto 40px auto',
 });
 
 const Header = () => {

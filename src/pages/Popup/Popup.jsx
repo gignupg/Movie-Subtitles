@@ -18,7 +18,9 @@ const msTheme = createMuiTheme({
 const Popup = () => {
   // Send a message to the content script to display the subtitles
   chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-    chrome.tabs.sendMessage(tab[0].id, 'activation');
+    let site = tab[0].url.replace(/^.*\/\//, '').replace(/\/.*/, '');
+    if (!/^www/.test(site)) site = 'www.' + site;
+    chrome.tabs.sendMessage(tab[0].id, { activation: true, site: site });
   });
 
   return (

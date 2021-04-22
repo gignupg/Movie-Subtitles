@@ -13,6 +13,7 @@
     "48": "movie-subtitles-48.png",
     "128": "movie-subtitles-128.png"
   },
+  "permissions": ["storage", "tabs"],
   "content_scripts": [
     {
       "matches": ["http://*/*", "https://*/*", "<all_urls>"],

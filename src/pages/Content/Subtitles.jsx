@@ -38,11 +38,23 @@ const SubtitleText = styled('div')({
   userSelect: 'none',
 });
 
-function Content() {
+function Subtitles({ video }) {
+  const pauseHandler = () => {
+    if (!video.paused) {
+      video.pause();
+    }
+  };
+
+  const playHandler = () => {
+    if (video.paused) {
+      video.play();
+    }
+  };
+
   return (
     <Container>
       <Draggable axis="y">
-        <SubtitleWrapper>
+        <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
           <SubtitleButton id="prev-button">«</SubtitleButton>
           <SubtitleText>No subtitles loaded</SubtitleText>
           <SubtitleButton id="next-button">»</SubtitleButton>
@@ -52,4 +64,4 @@ function Content() {
   );
 }
 
-export default Content;
+export default Subtitles;
