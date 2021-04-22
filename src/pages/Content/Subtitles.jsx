@@ -1,26 +1,21 @@
 import React from 'react';
 import { styled } from '@material-ui/core/styles';
+import Draggable from 'react-draggable';
 
 const Container = styled('div')({
   position: 'absolute',
+  left: '50%',
+  transform: 'translateX(-50%)',
   bottom: '50px',
-  width: '100%',
-  overflow: 'visible',
-  background: 'none !important',
-  textAlign: 'center',
-  color: 'white',
-  cursor: 'default',
+  maxWidth: '90%',
   zIndex: 9999999999,
 });
 
 const SubtitleWrapper = styled('div')({
-  display: 'inline-flex',
-  justifyContent: 'center',
-  alignItems: 'center',
+  color: 'white',
   fontSize: '24px',
   backgroundColor: 'rgba(0,0,0,0.5)',
   borderRadius: '40px',
-  maxWidth: '90%',
 });
 
 const SubtitleButton = styled('div')({
@@ -46,11 +41,13 @@ const SubtitleText = styled('div')({
 function Content() {
   return (
     <Container>
-      <SubtitleWrapper>
-        <SubtitleButton id="prev-button">«</SubtitleButton>
-        <SubtitleText>No subtitles loaded</SubtitleText>
-        <SubtitleButton id="next-button">»</SubtitleButton>
-      </SubtitleWrapper>
+      <Draggable axis="y">
+        <SubtitleWrapper>
+          <SubtitleButton id="prev-button">«</SubtitleButton>
+          <SubtitleText>No subtitles loaded</SubtitleText>
+          <SubtitleButton id="next-button">»</SubtitleButton>
+        </SubtitleWrapper>
+      </Draggable>
     </Container>
   );
 }
