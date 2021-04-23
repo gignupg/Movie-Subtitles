@@ -8,7 +8,7 @@ const Container = styled('div')({
   transform: 'translateX(-50%)',
   bottom: '50px',
   maxWidth: '90%',
-  zIndex: 9999999999,
+  zIndex: 2147483647,
 });
 
 const SubtitleWrapper = styled('div')({

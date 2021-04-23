@@ -1,23 +1,21 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Subtitles from './Subtitles';
-import videoObject from './videoObject';
+import findVideo from './videoObject';
 
 let subtitlesInjected = false;
 
 // Wait for the popup message
 chrome.runtime.onMessage.addListener(function (msg) {
-  if (msg.activation && !subtitlesInjected) {
-    const video = videoObject[msg.site].controller;
+  if (msg === 'activation' && !subtitlesInjected) {
+    const video = findVideo('video');
 
     // Inject the #movie-subtitles div!
     const subtitleContainer = document.createElement('div');
     subtitleContainer.id = 'movie-subtitles';
     subtitleContainer.style =
       'position: absolute; top: 0; background: transparent; width: 100%; height: 100%;';
-    videoObject[msg.site].container.prepend(subtitleContainer);
-    // Display(site).prepend(subtitleContainer);
-    // document.querySelector('#movie_player').prepend(container);
+    findVideo('container').prepend(subtitleContainer);
 
     // Display the subtitles
     render(
