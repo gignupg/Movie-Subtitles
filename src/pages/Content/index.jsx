@@ -1,29 +1,42 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Subtitles from './Subtitles';
-import findVideo from './videoObject';
+// import Subtitles from './Subtitles';
+import IconBar from './IconBar';
+import videoPlayerDetector from './videoPlayerDetector';
+import Popup from '../Popup/Popup';
 
-let subtitlesInjected = false;
+let displayingExtension = false;
 
 // Wait for the popup message
 chrome.runtime.onMessage.addListener(function (msg) {
-  if (msg === 'activation' && !subtitlesInjected) {
-    const video = findVideo('video');
+  if (msg === 'activation' && !displayingExtension) {
+    const video = videoPlayerDetector('video');
+    const container = videoPlayerDetector('container');
 
-    // Inject the #movie-subtitles div!
-    const subtitleContainer = document.createElement('div');
-    subtitleContainer.id = 'movie-subtitles';
-    subtitleContainer.style =
-      'position: absolute; top: 0; background: transparent; width: 100%; height: 100%;';
-    findVideo('container').prepend(subtitleContainer);
+    console.log('video:', video);
+    console.log('container:', container);
 
-    // Display the subtitles
-    render(
-      <Subtitles video={video} />,
-      document.querySelector('#movie-subtitles')
-    );
+    // const iconBar = videoPlayerDetector('iconBar');
 
-    // Make sure only to inject the subtitles once!
-    subtitlesInjected = true;
+    // Inject the icon on youtube or prime
+
+    // // Display the subtitles
+    // render(
+    //   <Subtitles video={video} />,
+    //   document.querySelector('#movie-subtitles-container')
+    // );
+
+    // // Display the icon
+    // render(<IconBar />, document.querySelector('#movie-subtitles-icon-bar'));
+
+    // // When the icon gets clicked
+    // document
+    //   .querySelector('#movie-subtitles-icon-bar')
+    //   .addEventListener('click', function () {
+    //     render(<Popup />, document.querySelector('#movie-subtitles-container'));
+    //   });
+
+    // Make sure only to inject the extension code once!
+    displayingExtension = true;
   }
 });
