@@ -6,7 +6,7 @@ const Container = styled('div')({
   position: 'absolute',
   left: '50%',
   transform: 'translateX(-50%)',
-  bottom: '50px',
+  bottom: '75px',
   maxWidth: '90%',
   zIndex: 2147483647,
 });

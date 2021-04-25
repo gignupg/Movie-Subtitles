@@ -1,6 +1,6 @@
 import React from 'react';
 
-function IconBar() {
+function Icon() {
   // return (
   //   <svg xmlns="http://www.w3.org/2000/svg" version="1.1" viewBox="0 0 36 36">
   //     <path
@@ -25,4 +25,4 @@ function IconBar() {
   );
 }
 
-export default IconBar;
+export default Icon;
