@@ -25,6 +25,11 @@ const msTheme = createMuiTheme({
         color: '#000000',
       },
     },
+    MuiInputBase: {
+      input: {
+        fontSize: '16px',
+      },
+    },
     MuiContainer: {
       root: {
         paddingLeft: '16px !important',
@@ -45,7 +50,6 @@ const msTheme = createMuiTheme({
 });
 
 const Popup = () => {
-  console.log('Popup component called');
   return (
     <ThemeProvider theme={msTheme}>
       <Header />
