@@ -1,9 +1,9 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Subtitles from './Subtitles';
-import Icon from './Icon';
-import videoPlayerDetector from './videoPlayerDetector';
-import Popup from '../Popup/Popup';
+import Img from './Img';
+import videoPlayerDetector from './videoPlayerDetector/videoPlayerDetector';
+import PopupWrapper from './PopupWrapper';
 
 let displayingExtension = false;
 
@@ -18,13 +18,11 @@ chrome.runtime.onMessage.addListener(function (msg) {
     render(<Subtitles video={video} />, container);
 
     // Display the icon
-    render(<Icon />, iconWrapper);
-
-    console.log('container:', container);
+    render(<Img />, iconWrapper);
 
     // When the icon gets clicked
     iconWrapper.addEventListener('click', function () {
-      render(<Popup />, document.querySelectorAll('.ytp-panel-menu')[0]);
+      render(<PopupWrapper />, container);
     });
 
     // Make sure only to inject the extension code once!

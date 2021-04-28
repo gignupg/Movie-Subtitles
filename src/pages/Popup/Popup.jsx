@@ -4,6 +4,7 @@ import Header from './Header';
 import SubtitleSettings from './SubtitleSettings/index';
 import GeneralSection from './GeneralSection';
 
+// For consistency across websites with different global styles
 const msTheme = createMuiTheme({
   palette: {
     primary: {
@@ -11,6 +12,34 @@ const msTheme = createMuiTheme({
     },
     secondary: {
       main: '#ff5722',
+    },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        fontSize: '14px !important',
+      },
+    },
+    MuiButtonBase: {
+      root: {
+        color: '#000000',
+      },
+    },
+    MuiContainer: {
+      root: {
+        paddingLeft: '16px !important',
+        paddingRight: '16px !important',
+      },
+    },
+    MuiSvgIcon: {
+      root: {
+        fontSize: '24px !important',
+      },
+    },
+    MuiTypography: {
+      body1: {
+        fontSize: '16px !important',
+      },
     },
   },
 });

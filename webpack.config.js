@@ -140,7 +140,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/pages/Content/content.styles.css',
+          from: 'src/assets/img/movie-subtitles-16.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -149,7 +149,16 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/assets/img/movie-subtitles-16.png',
+          from: 'src/assets/img/movie-subtitles-19.png',
+          to: path.join(__dirname, 'build'),
+          force: true,
+        },
+      ],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/assets/img/movie-subtitles-24.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -177,6 +186,15 @@ var options = {
       patterns: [
         {
           from: 'src/assets/img/movie-subtitles-128.png',
+          to: path.join(__dirname, 'build'),
+          force: true,
+        },
+      ],
+    }),
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/assets/img/icons8-settings-32.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
