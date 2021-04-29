@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
 
@@ -39,15 +39,19 @@ const SubtitleText = styled('div')({
 });
 
 function Subtitles({ video }) {
+  const [videoPlaying, setVideoPlaying] = useState(true);
+
   const pauseHandler = () => {
     if (!video.paused) {
       video.pause();
+      setVideoPlaying(false);
     }
   };
 
   const playHandler = () => {
-    if (video.paused) {
+    if (!videoPlaying) {
       video.play();
+      setVideoPlaying(true);
     }
   };
 
