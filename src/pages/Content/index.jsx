@@ -1,9 +1,8 @@
 import React from 'react';
 import { render } from 'react-dom';
-import Subtitles from './Subtitles';
+import Content from './Content';
 import Img from './Img';
 import videoPlayerDetector from './videoPlayerDetector/videoPlayerDetector';
-import PopupWrapper from './PopupWrapper';
 
 let displayingExtension = false;
 
@@ -14,16 +13,11 @@ chrome.runtime.onMessage.addListener(function (msg) {
     const container = videoPlayerDetector('container');
     const iconWrapper = videoPlayerDetector('iconWrapper');
 
-    // Display the subtitles
-    render(<Subtitles video={video} />, container);
+    // Display the subtitles and the menu if open
+    render(<Content video={video} icon={iconWrapper} />, container);
 
     // Display the icon
     render(<Img />, iconWrapper);
-
-    // When the icon gets clicked
-    iconWrapper.addEventListener('click', function () {
-      render(<PopupWrapper />, container);
-    });
 
     // Make sure only to inject the extension code once!
     displayingExtension = true;
