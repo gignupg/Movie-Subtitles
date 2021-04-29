@@ -13,8 +13,8 @@ chrome.runtime.onMessage.addListener(function (msg) {
     const container = videoPlayerDetector('container');
     const iconWrapper = videoPlayerDetector('iconWrapper');
 
-    // Display the subtitles and the menu if open
-    render(<Content video={video} icon={iconWrapper} />, container);
+    // Display the subtitles
+    render(<Content video={video} />, container);
 
     // Display the icon
     render(<Img />, iconWrapper);

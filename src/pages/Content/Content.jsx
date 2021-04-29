@@ -1,21 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Subtitles from './Subtitles';
-import PopupWrapper from './PopupWrapper';
 
-const Content = ({ video, icon }) => {
-  const [menu, setMenu] = useState(false);
-
-  // When the icon gets clicked
-  icon.addEventListener('click', function () {
-    setMenu(menu ? false : true);
-  });
-
+export default function Content({ video }) {
   return (
     <>
+      <div id="movie-subtitles-blurred-background"></div>
       <Subtitles video={video} />
-      {menu && <PopupWrapper />}
+      <div id="movie-subtitles-menu-container"></div>
     </>
   );
-};
-
-export default Content;
+}

@@ -62,7 +62,7 @@ const Synchronization = () => {
                   alignItems="center"
                   spacing={1}
                 >
-                  <Grid item style={{ color: 'black' }}>
+                  <Grid item style={{ color: 'black', fontWeight: '400' }}>
                     Earlier
                   </Grid>
                   <Grid item>
@@ -73,7 +73,7 @@ const Synchronization = () => {
                       name="checkedC"
                     />
                   </Grid>
-                  <Grid item style={{ color: 'black' }}>
+                  <Grid item style={{ color: 'black', fontWeight: '400' }}>
                     Later
                   </Grid>
                 </Grid>

@@ -28,6 +28,7 @@ const msTheme = createMuiTheme({
     MuiInputBase: {
       input: {
         fontSize: '16px',
+        border: 'none !important',
       },
     },
     MuiContainer: {
