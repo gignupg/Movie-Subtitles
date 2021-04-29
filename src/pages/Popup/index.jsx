@@ -8,6 +8,9 @@ chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
   chrome.tabs.sendMessage(tab[0].id, 'activation');
 });
 
-render(<Popup />, window.document.querySelector('#app-container'));
+render(
+  <Popup popup={true} menu={false} />,
+  window.document.querySelector('#app-container')
+);
 
 if (module.hot) module.hot.accept();

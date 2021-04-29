@@ -50,11 +50,11 @@ const msTheme = createMuiTheme({
   },
 });
 
-const Popup = () => {
+const Popup = ({ popup }) => {
   return (
     <ThemeProvider theme={msTheme}>
       <Header />
-      <SubtitleSettings />
+      <SubtitleSettings popup={popup} />
       <GeneralSection />
     </ThemeProvider>
   );

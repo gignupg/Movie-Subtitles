@@ -3,10 +3,10 @@ import LoadSubtitles from './LoadSubtitles';
 import DisplaySettings from './DisplaySettings';
 import Synchronization from './Synchronization';
 
-const SubtitleSettings = () => {
+const SubtitleSettings = ({ popup }) => {
   return (
     <>
-      <LoadSubtitles />
+      <LoadSubtitles popup={popup} />
       <DisplaySettings />
       <Synchronization />
     </>

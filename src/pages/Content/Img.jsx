@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { render } from 'react-dom';
 import PopupWrapper from './PopupWrapper';
 import { styled } from '@material-ui/core/styles';
@@ -23,18 +23,29 @@ export default function Img() {
     'movie-subtitles-blurred-background'
   );
 
-  function handleMenu() {
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg === 'activation') {
+      setMenu(false);
+    }
+  });
+
+  function toggleMenu() {
     setMenu(menu ? false : true);
   }
 
-  // Conditionally render the menu
-  render(menu && <PopupWrapper />, menuContainer);
-  // Conditionally blur the video
-  render(menu && <BlurredBackground onClick={handleMenu} />, blurContainer);
+  useEffect(() => {
+    // Always render the menu but hide it conditionally
+    render(
+      <PopupWrapper popup={false} display={menu ? 'block' : 'none'} />,
+      menuContainer
+    );
+    // Conditionally blur the video
+    render(menu && <BlurredBackground onClick={toggleMenu} />, blurContainer);
+  });
 
   return (
     <img
-      onClick={handleMenu}
+      onClick={toggleMenu}
       src={chrome.runtime.getURL('icons8-settings-32.png')}
       alt="Logo"
     />
