@@ -1,5 +1,5 @@
 import React from 'react';
-import Subtitles from './Subtitles';
+import Subtitles from './subtitles/Subtitles';
 
 export default function Content({ video }) {
   return (

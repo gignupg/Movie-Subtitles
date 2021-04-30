@@ -1,24 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { styled } from '@material-ui/core/styles';
 import PublishIcon from '@material-ui/icons/Publish';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
+import eventBus from '../../Content/EventBus';
+
+const InvisibleInput = styled('input')({
+  display: 'none',
+});
 
 const LoadSubtitles = ({ popup }) => {
-  function uploadHandler() {
+  const [listening, setListening] = useState(false);
+
+  function invisibleUploadHandler(e) {
+    const file = e.target.files[0];
+    eventBus.dispatch('fileUpload', file);
+  }
+
+  function uploadButtonHandler() {
     if (popup) {
       // Upload button clicked
       // Sending a message to the content script, then opening the file upload window from there
       chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
         chrome.tabs.sendMessage(tab[0].id, 'fileUpload');
       });
+    } else {
+      document.getElementById('movie-subtitles-file-upload').click();
     }
   }
 
-  if (!popup) {
+  if (!popup && !listening) {
+    setListening(true);
     chrome.runtime.onMessage.addListener((msg) => {
       if (msg === 'fileUpload') {
-        console.log('msg', msg);
+        document.getElementById('movie-subtitles-file-upload').click();
       }
     });
   }
@@ -26,8 +42,13 @@ const LoadSubtitles = ({ popup }) => {
   return (
     <Box mb={4} mt={2}>
       <Grid container justify="center" my={8}>
+        <InvisibleInput
+          onChange={invisibleUploadHandler}
+          type="file"
+          id="movie-subtitles-file-upload"
+        />
         <Button
-          onClick={uploadHandler}
+          onClick={uploadButtonHandler}
           variant="contained"
           color="secondary"
           endIcon={<PublishIcon />}
