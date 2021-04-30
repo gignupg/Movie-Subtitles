@@ -3,6 +3,8 @@ import { styled } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
 import eventBus from '../EventBus';
 import languageEncoding from 'detect-file-encoding-and-language';
+import processSubtitles from './processSubtitles';
+import timeUpdate from './timeUpdate';
 
 const Container = styled('div')({
   position: 'absolute',
@@ -42,19 +44,20 @@ const SubtitleText = styled('div')({
 
 function Subtitles({ video }) {
   const [videoPlaying, setVideoPlaying] = useState(true);
-  const [subtitles, setSubtitles] = useState('No subtitles loaded');
+  const [currentSubtitles, setCurrentSubtitles] = useState(
+    'No subtitles loaded'
+  );
+  const [subtitleArr, setSubtitleArr] = useState([]);
+  const [pos, setPos] = useState(0);
 
-  console.log('Setting up the event bus listener');
   eventBus.on('fileUpload', (file) => {
     languageEncoding(file)
       .then((fileInfo) => {
-        console.log('fileInfo:', fileInfo);
         const reader = new FileReader();
 
         reader.onload = function (evt) {
           const content = evt.target.result;
-          console.log('content:', content);
-          // processSubtitles(content.split('\n'));
+          setSubtitleArr(processSubtitles(content.split('\n')));
         };
         reader.readAsText(file, fileInfo.encoding);
       })
@@ -62,6 +65,10 @@ function Subtitles({ video }) {
         console.log('Error caught:', err);
       });
   });
+
+  video.ontimeupdate = () => {
+    setCurrentSubtitles(timeUpdate(subtitleArr, video, pos, setPos));
+  };
 
   const pauseHandler = () => {
     if (!video.paused) {
@@ -82,7 +89,7 @@ function Subtitles({ video }) {
       <Draggable axis="y">
         <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
           <SubtitleButton id="prev-button">«</SubtitleButton>
-          <SubtitleText>{subtitles}</SubtitleText>
+          <SubtitleText>{currentSubtitles}</SubtitleText>
           <SubtitleButton id="next-button">»</SubtitleButton>
         </SubtitleWrapper>
       </Draggable>
