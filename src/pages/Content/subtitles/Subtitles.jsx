@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
 import eventBus from '../EventBus';
@@ -16,6 +16,9 @@ const Container = styled('div')({
 });
 
 const SubtitleWrapper = styled('div')({
+  display: 'inline-flex',
+  justifyContent: 'center',
+  alignItems: 'center',
   color: 'white',
   fontSize: '24px',
   backgroundColor: 'rgba(0,0,0,0.5)',
@@ -30,6 +33,7 @@ const SubtitleButton = styled('div')({
   marginRight: '5px',
   color: 'white',
   border: 'none',
+  cursor: 'pointer',
   userSelect: 'none',
 });
 
@@ -50,6 +54,11 @@ function Subtitles({ video }) {
   const [subtitleArr, setSubtitleArr] = useState([]);
   const [pos, setPos] = useState(0);
 
+  useEffect(() => {
+    prepareTimeUpdate();
+    // eslint-disable-next-line
+  }, [subtitleArr]);
+
   eventBus.on('fileUpload', (file) => {
     languageEncoding(file)
       .then((fileInfo) => {
@@ -66,9 +75,13 @@ function Subtitles({ video }) {
       });
   });
 
-  video.ontimeupdate = () => {
-    setCurrentSubtitles(timeUpdate(subtitleArr, video, pos, setPos));
-  };
+  video.ontimeupdate = prepareTimeUpdate;
+
+  function prepareTimeUpdate() {
+    if (subtitleArr.length > 1) {
+      setCurrentSubtitles(timeUpdate(subtitleArr, video, pos, setPos));
+    }
+  }
 
   const pauseHandler = () => {
     if (!video.paused) {
@@ -84,13 +97,29 @@ function Subtitles({ video }) {
     }
   };
 
+  const handlePrevButton = () => {
+    if (video.currentTime > subtitleArr[pos].start + 1) {
+      video.currentTime = subtitleArr[pos].start;
+    } else if (pos !== 0) {
+      video.currentTime = subtitleArr[pos - 1].start;
+    }
+    prepareTimeUpdate();
+  };
+
+  const handleNextButton = () => {
+    if (pos !== subtitleArr.length - 1) {
+      video.currentTime = subtitleArr[pos + 1].start;
+    }
+    prepareTimeUpdate();
+  };
+
   return (
     <Container>
       <Draggable axis="y">
         <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
-          <SubtitleButton id="prev-button">«</SubtitleButton>
+          <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <SubtitleText>{currentSubtitles}</SubtitleText>
-          <SubtitleButton id="next-button">»</SubtitleButton>
+          <SubtitleButton onClick={handleNextButton}>»</SubtitleButton>
         </SubtitleWrapper>
       </Draggable>
     </Container>

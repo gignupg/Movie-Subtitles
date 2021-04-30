@@ -1,6 +1,7 @@
 export default function timeUpdate(subs, video, pos, setPos) {
   if (subs && subs.length > 1) {
     const time = video.currentTime.toFixed(3);
+    let tempPos = pos;
     // See if it's the next or previous position.
     if (
       subs[pos] &&
@@ -15,27 +16,29 @@ export default function timeUpdate(subs, video, pos, setPos) {
       time >= subs[pos + 1].start &&
       time < subs[pos + 2].start
     ) {
-      setPos(pos + 1);
+      tempPos = pos + 1;
     } else if (
       subs[pos - 1] &&
       time >= subs[pos - 1].start &&
       time < subs[pos].start
     ) {
-      setPos(pos - 1);
+      tempPos = pos - 1;
     } else {
       // Look through the whole array to find the correct position
       const newPos = subs.findIndex((el) => el.start > time);
       // If a match was found update "pos"
       if (newPos > 0) {
-        setPos(newPos - 1);
+        tempPos = newPos - 1;
       } else {
         if (time < 200) {
-          setPos(0);
+          tempPos = 0;
         } else {
-          setPos(subs.length - 1);
+          tempPos = subs.length - 1;
         }
       }
     }
-    return subs[pos].text;
+
+    setPos(tempPos);
+    return subs[tempPos].text;
   }
 }
