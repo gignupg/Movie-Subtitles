@@ -182,6 +182,5 @@ export default function processSubtitles(content) {
         'Music (' + (music.end - music.start).toFixed() + ' seconds)';
     }
   }
-  console.log(newSubs);
   return newSubs;
 }

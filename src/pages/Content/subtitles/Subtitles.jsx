@@ -10,17 +10,15 @@ import Grid from '@material-ui/core/Grid';
 
 const Container = styled('div')({
   position: 'absolute',
+  left: '50%',
   bottom: '75px',
-  width: '100%',
-  overflow: 'visible',
-  background: 'none !important',
-  textAlign: 'center',
-  color: 'white',
-  cursor: 'default',
-  zIndex: 9999999,
+  maxWidth: '100%',
+  zIndex: 2147483647,
 });
 
 const SubtitleWrapper = styled('div')({
+  position: 'relative',
+  left: '-50%',
   display: 'inline-flex',
   justifyContent: 'center',
   alignItems: 'center',
@@ -120,8 +118,8 @@ function Subtitles({ video }) {
   };
 
   return (
-    <Container>
-      <Draggable axis="y">
+    <Draggable axis="y">
+      <Container>
         <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <MusicWrapper>
@@ -144,8 +142,8 @@ function Subtitles({ video }) {
           </MusicWrapper>
           <SubtitleButton onClick={handleNextButton}>»</SubtitleButton>
         </SubtitleWrapper>
-      </Draggable>
-    </Container>
+      </Container>
+    </Draggable>
   );
 }
 
