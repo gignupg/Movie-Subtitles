@@ -56,17 +56,14 @@ const MusicWrapper = styled('div')({
 
 function Subtitles({ video }) {
   const [videoPlaying, setVideoPlaying] = useState(true);
-  const [currentSubtitles, setCurrentSubtitles] = useState(
-    'No subtitles loaded'
-  );
-  const [subtitleArr, setSubtitleArr] = useState([]);
+  const [subs, setSubs] = useState([{ text: 'No subtitles loaded' }]);
   const [pos, setPos] = useState(0);
-  const [musicButton, setMusicButton] = useState(false);
+  const [musicHover, setMusicHover] = useState(false);
 
   useEffect(() => {
     prepareTimeUpdate();
     // eslint-disable-next-line
-  }, [subtitleArr]);
+  }, [subs]);
 
   eventBus.on('fileUpload', (file) => {
     languageEncoding(file)
@@ -75,7 +72,7 @@ function Subtitles({ video }) {
 
         reader.onload = function (evt) {
           const content = evt.target.result;
-          setSubtitleArr(processSubtitles(content.split('\n')));
+          setSubs(processSubtitles(content.split('\n')));
         };
         reader.readAsText(file, fileInfo.encoding);
       })
@@ -87,10 +84,8 @@ function Subtitles({ video }) {
   video.ontimeupdate = prepareTimeUpdate;
 
   function prepareTimeUpdate() {
-    if (subtitleArr.length > 1) {
-      setCurrentSubtitles(
-        timeUpdate(subtitleArr, video, pos, setPos, setMusicButton)
-      );
+    if (subs.length > 1) {
+      timeUpdate(subs, video, pos, setPos);
     }
   }
 
@@ -109,17 +104,17 @@ function Subtitles({ video }) {
   };
 
   const handlePrevButton = () => {
-    if (video.currentTime > subtitleArr[pos].start + 1) {
-      video.currentTime = subtitleArr[pos].start;
+    if (video.currentTime > subs[pos].start + 1) {
+      video.currentTime = subs[pos].start;
     } else if (pos !== 0) {
-      video.currentTime = subtitleArr[pos - 1].start;
+      video.currentTime = subs[pos - 1].start;
     }
     prepareTimeUpdate();
   };
 
   const handleNextButton = () => {
-    if (pos !== subtitleArr.length - 1) {
-      video.currentTime = subtitleArr[pos + 1].start;
+    if (pos !== subs.length - 1) {
+      video.currentTime = subs[pos + 1].start;
     }
     prepareTimeUpdate();
   };
@@ -131,12 +126,18 @@ function Subtitles({ video }) {
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <MusicWrapper>
             <SubtitleText
-              dangerouslySetInnerHTML={{ __html: currentSubtitles }}
+              dangerouslySetInnerHTML={{ __html: subs[pos].text }}
             ></SubtitleText>
-            {musicButton && (
+            {subs[pos].music && (
               <Grid container justify="center" style={{ marginBottom: '7px' }}>
-                <Button variant="contained" color="primary">
-                  Music (26 seconds)
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => (video.currentTime = subs[pos].music.end)}
+                  onMouseEnter={() => setMusicHover(true)}
+                  onMouseLeave={() => setMusicHover(false)}
+                >
+                  {musicHover ? 'Skip the music!' : subs[pos].music.text}
                 </Button>
               </Grid>
             )}
