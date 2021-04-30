@@ -1,4 +1,4 @@
-export default function timeUpdate(subs, video, pos, setPos) {
+export default function timeUpdate(subs, video, pos, setPos, setMusicButton) {
   if (subs && subs.length > 1) {
     const time = video.currentTime.toFixed(3);
     let tempPos = pos;
@@ -36,6 +36,16 @@ export default function timeUpdate(subs, video, pos, setPos) {
           tempPos = subs.length - 1;
         }
       }
+    }
+
+    // Check if it's music!
+    const music = subs[tempPos].music;
+    const next = subs[tempPos + 1].music || null;
+
+    if (music && next) {
+      setMusicButton(true);
+    } else {
+      setMusicButton(false);
     }
 
     setPos(tempPos);

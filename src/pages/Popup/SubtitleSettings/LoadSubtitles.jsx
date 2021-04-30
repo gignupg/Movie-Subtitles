@@ -10,12 +10,13 @@ const InvisibleInput = styled('input')({
   display: 'none',
 });
 
-const LoadSubtitles = ({ popup }) => {
+const LoadSubtitles = ({ popup, setMenu }) => {
   const [listening, setListening] = useState(false);
 
   function invisibleUploadHandler(e) {
     const file = e.target.files[0];
     eventBus.dispatch('fileUpload', file);
+    setMenu(false);
   }
 
   function uploadButtonHandler() {

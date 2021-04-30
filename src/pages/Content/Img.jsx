@@ -33,10 +33,15 @@ export default function Img() {
     setMenu(menu ? false : true);
   }
 
+  // The render function have to be inside a useEffect or componentDidUpdate to avoid warning messages in the browser
   useEffect(() => {
     // Always render the menu but hide it conditionally
     render(
-      <PopupWrapper popup={false} display={menu ? 'block' : 'none'} />,
+      <PopupWrapper
+        setMenu={setMenu}
+        popup={false}
+        display={menu ? 'block' : 'none'}
+      />,
       menuContainer
     );
     // Conditionally blur the video

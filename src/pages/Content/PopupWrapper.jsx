@@ -14,10 +14,10 @@ const Wrapper = styled('div')({
   zIndex: 2147483647,
 });
 
-const PopupWrapper = ({ popup, display }) => {
+const PopupWrapper = ({ popup, display, setMenu }) => {
   return (
     <Wrapper style={{ display: display }}>
-      <Popup popup={popup} />
+      <Popup setMenu={setMenu} popup={popup} />
     </Wrapper>
   );
 };

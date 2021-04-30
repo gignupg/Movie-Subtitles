@@ -19,6 +19,9 @@ const msTheme = createMuiTheme({
       root: {
         fontSize: '14px !important',
       },
+      containedPrimary: {
+        backgroundColor: '#ba000d !important',
+      },
     },
     MuiButtonBase: {
       root: {
@@ -50,11 +53,11 @@ const msTheme = createMuiTheme({
   },
 });
 
-const Popup = ({ popup }) => {
+const Popup = ({ popup, setMenu }) => {
   return (
     <ThemeProvider theme={msTheme}>
       <Header />
-      <SubtitleSettings popup={popup} />
+      <SubtitleSettings popup={popup} setMenu={setMenu} />
       <GeneralSection />
     </ThemeProvider>
   );

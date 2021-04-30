@@ -5,14 +5,19 @@ import eventBus from '../EventBus';
 import languageEncoding from 'detect-file-encoding-and-language';
 import processSubtitles from './processSubtitles';
 import timeUpdate from './timeUpdate';
+import Button from '@material-ui/core/Button';
+import Grid from '@material-ui/core/Grid';
 
 const Container = styled('div')({
   position: 'absolute',
-  left: '50%',
-  transform: 'translateX(-50%)',
   bottom: '75px',
-  maxWidth: '90%',
-  zIndex: 2147483647,
+  width: '100%',
+  overflow: 'visible',
+  background: 'none !important',
+  textAlign: 'center',
+  color: 'white',
+  cursor: 'default',
+  zIndex: 9999999,
 });
 
 const SubtitleWrapper = styled('div')({
@@ -29,8 +34,8 @@ const SubtitleButton = styled('div')({
   display: 'inline-block',
   backgroundColor: 'transparent',
   fontWeight: 900,
-  marginLeft: '5px',
-  marginRight: '5px',
+  marginLeft: '10px',
+  marginRight: '10px',
   color: 'white',
   border: 'none',
   cursor: 'pointer',
@@ -39,11 +44,14 @@ const SubtitleButton = styled('div')({
 
 const SubtitleText = styled('div')({
   display: 'inline-block',
-  marginLeft: 0,
-  marginRight: 0,
-  marginTop: '5px',
-  marginBottom: '5px',
+  margin: '7px 0 7px 0',
   userSelect: 'none',
+  textAlign: 'center',
+});
+
+const MusicWrapper = styled('div')({
+  display: 'block',
+  margin: 0,
 });
 
 function Subtitles({ video }) {
@@ -53,6 +61,7 @@ function Subtitles({ video }) {
   );
   const [subtitleArr, setSubtitleArr] = useState([]);
   const [pos, setPos] = useState(0);
+  const [musicButton, setMusicButton] = useState(false);
 
   useEffect(() => {
     prepareTimeUpdate();
@@ -79,7 +88,9 @@ function Subtitles({ video }) {
 
   function prepareTimeUpdate() {
     if (subtitleArr.length > 1) {
-      setCurrentSubtitles(timeUpdate(subtitleArr, video, pos, setPos));
+      setCurrentSubtitles(
+        timeUpdate(subtitleArr, video, pos, setPos, setMusicButton)
+      );
     }
   }
 
@@ -118,7 +129,18 @@ function Subtitles({ video }) {
       <Draggable axis="y">
         <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
-          <SubtitleText>{currentSubtitles}</SubtitleText>
+          <MusicWrapper>
+            <SubtitleText
+              dangerouslySetInnerHTML={{ __html: currentSubtitles }}
+            ></SubtitleText>
+            {musicButton && (
+              <Grid container justify="center" style={{ marginBottom: '7px' }}>
+                <Button variant="contained" color="primary">
+                  Music (26 seconds)
+                </Button>
+              </Grid>
+            )}
+          </MusicWrapper>
           <SubtitleButton onClick={handleNextButton}>»</SubtitleButton>
         </SubtitleWrapper>
       </Draggable>
