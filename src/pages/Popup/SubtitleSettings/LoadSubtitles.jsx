@@ -4,7 +4,6 @@ import PublishIcon from '@material-ui/icons/Publish';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
-import eventBus from '../../Content/EventBus';
 
 const InvisibleInput = styled('input')({
   display: 'none',
@@ -15,7 +14,8 @@ const LoadSubtitles = ({ popup, setMenu }) => {
 
   function invisibleUploadHandler(e) {
     const file = e.target.files[0];
-    eventBus.dispatch('fileUpload', file);
+    const fileUpload = new CustomEvent('fileUpload', { detail: file });
+    document.dispatchEvent(fileUpload);
     setMenu(false);
   }
 
@@ -24,7 +24,7 @@ const LoadSubtitles = ({ popup, setMenu }) => {
       // Upload button clicked
       // Sending a message to the content script, then opening the file upload window from there
       chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-        chrome.tabs.sendMessage(tab[0].id, 'fileUpload');
+        chrome.tabs.sendMessage(tab[0].id, { fileUpload: true });
       });
     } else {
       document.getElementById('movie-subtitles-file-upload').click();
@@ -34,7 +34,7 @@ const LoadSubtitles = ({ popup, setMenu }) => {
   if (!popup && !listening) {
     setListening(true);
     chrome.runtime.onMessage.addListener((msg) => {
-      if (msg === 'fileUpload') {
+      if (msg.fileUpload) {
         document.getElementById('movie-subtitles-file-upload').click();
       }
     });

@@ -8,7 +8,7 @@ let displayingExtension = false;
 
 // Wait for the popup message
 chrome.runtime.onMessage.addListener(function (msg) {
-  if (msg === 'activation' && !displayingExtension) {
+  if (msg.activation && !displayingExtension) {
     const video = videoPlayerDetector('video');
     const container = videoPlayerDetector('container');
     const iconWrapper = videoPlayerDetector('iconWrapper');

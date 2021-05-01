@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
@@ -9,7 +9,33 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import MenuHeading from '../MenuHeading';
 import Box from '@material-ui/core/Box';
 
-const DisplaySettings = () => {
+const DisplaySettings = ({ popup }) => {
+  const [listening, setListening] = useState(false);
+
+  function displaySettingsHandler(action) {
+    if (popup) {
+      // Send message to content script
+      chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+        chrome.tabs.sendMessage(tab[0].id, { displaySettings: action });
+      });
+    } else {
+      // Dispatch event
+      const displaySettings = new CustomEvent('displaySettings', {
+        detail: action,
+      });
+      document.dispatchEvent(displaySettings);
+    }
+  }
+
+  if (!popup && !listening) {
+    setListening(true);
+    chrome.runtime.onMessage.addListener((msg) => {
+      if (msg.displaySettings) {
+        displaySettingsHandler(msg.displaySettings);
+      }
+    });
+  }
+
   return (
     <>
       <MenuHeading heading="Display:" />
@@ -18,10 +44,18 @@ const DisplaySettings = () => {
           <ListItem button>
             <ListItemText primary="Font Size" />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="font-smaller">
+              <IconButton
+                onClick={() => displaySettingsHandler('font-smaller')}
+                edge="end"
+                aria-label="font-smaller"
+              >
                 <RemoveCircleIcon />
               </IconButton>
-              <IconButton edge="end" aria-label="font-bigger">
+              <IconButton
+                onClick={() => displaySettingsHandler('font-bigger')}
+                edge="end"
+                aria-label="font-bigger"
+              >
                 <AddCircleIcon />
               </IconButton>
             </ListItemSecondaryAction>
@@ -29,10 +63,18 @@ const DisplaySettings = () => {
           <ListItem button>
             <ListItemText primary="Background" />
             <ListItemSecondaryAction>
-              <IconButton edge="end" aria-label="opacity-minus">
+              <IconButton
+                onClick={() => displaySettingsHandler('opacity-minus')}
+                edge="end"
+                aria-label="opacity-minus"
+              >
                 <RemoveCircleIcon />
               </IconButton>
-              <IconButton edge="end" aria-label="opacity-plus">
+              <IconButton
+                onClick={() => displaySettingsHandler('opacity-plus')}
+                edge="end"
+                aria-label="opacity-plus"
+              >
                 <AddCircleIcon />
               </IconButton>
             </ListItemSecondaryAction>

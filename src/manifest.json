@@ -13,7 +13,7 @@
     "48": "movie-subtitles-48.png",
     "128": "movie-subtitles-128.png"
   },
-  "permissions": ["activeTab"],
+  "permissions": ["storage", "activeTab"],
   "content_scripts": [
     {
       "matches": ["<all_urls>"],

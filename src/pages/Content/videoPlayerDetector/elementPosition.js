@@ -7,7 +7,7 @@ const elementPosition = {
     iconWrapper: { selector: '.ytp-right-controls', spacing: '8px' },
   },
   [s.amazon]: {
-    video: { selector: 'video', index: 2 },
+    video: { selector: 'video', index: 1 },
     container: { selector: '.cascadesContainer' },
     iconWrapper: {
       selector: '.hideableTopButtons div:first-child',

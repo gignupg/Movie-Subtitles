@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
-import eventBus from '../EventBus';
 import languageEncoding from 'detect-file-encoding-and-language';
 import processSubtitles from './processSubtitles';
 import timeUpdate from './timeUpdate';
@@ -57,27 +56,101 @@ function Subtitles({ video }) {
   const [subs, setSubs] = useState([{ text: 'No subtitles loaded' }]);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
+  const fontRef = useRef(24);
+  const [fontSize, setFontSize] = useState(fontRef.current);
+  const opacityRef = useRef(0.5);
+  const [opacity, setOpacity] = useState(opacityRef.current);
+  const [listening, setListening] = useState(false);
+
+  // Retrieve user specific settings from chrome storage
+  chrome.storage.sync.get(null, function (storage) {
+    if (storage.fontSize !== undefined) {
+      fontRef.current = storage.fontSize;
+      setFontSize(storage.fontSize);
+    }
+    if (storage.opacity !== undefined) {
+      opacityRef.current = storage.opacity;
+      setOpacity(storage.opacity);
+    }
+  });
 
   useEffect(() => {
     prepareTimeUpdate();
     // eslint-disable-next-line
   }, [subs]);
 
-  eventBus.on('fileUpload', (file) => {
-    languageEncoding(file)
-      .then((fileInfo) => {
-        const reader = new FileReader();
+  if (!listening) {
+    // Make sure only to set up one listener!
+    setListening(true);
 
-        reader.onload = function (evt) {
-          const content = evt.target.result;
-          setSubs(processSubtitles(content.split('\n')));
-        };
-        reader.readAsText(file, fileInfo.encoding);
-      })
-      .catch((err) => {
-        console.log('Error caught:', err);
-      });
-  });
+    // Listen for fileUploads
+    document.addEventListener(
+      'fileUpload',
+      function (e) {
+        const file = e.detail;
+        languageEncoding(file)
+          .then((fileInfo) => {
+            const reader = new FileReader();
+
+            reader.onload = function (evt) {
+              const content = evt.target.result;
+              setSubs(processSubtitles(content.split('\n')));
+            };
+            reader.readAsText(file, fileInfo.encoding);
+          })
+          .catch((err) => {
+            console.log('Error caught:', err);
+          });
+      },
+      false
+    );
+
+    // Listen for displaySettings
+    document.addEventListener(
+      'displaySettings',
+      function (e) {
+        const action = e.detail;
+
+        switch (action) {
+          case 'font-smaller':
+            if (fontRef.current > 0) {
+              fontRef.current -= 2;
+              setFontSize(fontRef.current);
+              chrome.storage.sync.set({
+                fontSize: fontRef.current,
+              });
+            }
+            break;
+          case 'font-bigger':
+            fontRef.current += 2;
+            setFontSize(fontRef.current);
+            chrome.storage.sync.set({
+              fontSize: fontRef.current,
+            });
+            break;
+          case 'opacity-minus':
+            if (opacityRef.current > 0) {
+              opacityRef.current -= 0.1;
+              setOpacity(opacityRef.current);
+              chrome.storage.sync.set({
+                opacity: opacityRef.current,
+              });
+            }
+            break;
+          case 'opacity-plus':
+            opacityRef.current += 0.1;
+            setOpacity(opacityRef.current);
+            chrome.storage.sync.set({
+              opacity: opacityRef.current,
+            });
+            break;
+          default:
+          // Do nothing
+        }
+      },
+      false
+    );
+  }
 
   video.ontimeupdate = prepareTimeUpdate;
 
@@ -118,9 +191,16 @@ function Subtitles({ video }) {
   };
 
   return (
-    <Draggable axis="y">
-      <Container>
-        <SubtitleWrapper onMouseEnter={pauseHandler} onMouseLeave={playHandler}>
+    <Container>
+      <Draggable axis="y">
+        <SubtitleWrapper
+          style={{
+            fontSize: fontSize + 'px',
+            backgroundColor: `rgba(0,0,0,${opacity})`,
+          }}
+          onMouseEnter={pauseHandler}
+          onMouseLeave={playHandler}
+        >
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <MusicWrapper>
             <SubtitleText
@@ -142,8 +222,8 @@ function Subtitles({ video }) {
           </MusicWrapper>
           <SubtitleButton onClick={handleNextButton}>»</SubtitleButton>
         </SubtitleWrapper>
-      </Container>
-    </Draggable>
+      </Draggable>
+    </Container>
   );
 }
 

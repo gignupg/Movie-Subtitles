@@ -24,7 +24,7 @@ export default function Img() {
   );
 
   chrome.runtime.onMessage.addListener((msg) => {
-    if (msg === 'activation') {
+    if (msg.activation) {
       setMenu(false);
     }
   });
