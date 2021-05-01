@@ -9,12 +9,10 @@ import Grid from '@material-ui/core/Grid';
 
 const Container = styled('div')({
   position: 'absolute',
+  display: 'flex',
+  justifyContent: 'center',
   bottom: '75px',
-  left: 0,
-  right: 0,
-  margin: 'auto',
-  width: 'fit-content',
-  maxWidth: '90%',
+  width: '100%',
   zIndex: 2147483647,
 });
 
@@ -187,16 +185,24 @@ function Subtitles({ video }) {
     prepareTimeUpdate();
   };
 
+  function imitatePlayBehaviour() {
+    if (video.paused) {
+      video.play();
+    } else {
+      video.pause();
+    }
+  }
+
   return (
     <Draggable axis="y">
-      <Container>
+      <Container onClick={imitatePlayBehaviour} onMouseLeave={playHandler}>
         <SubtitleWrapper
           style={{
             fontSize: fontSize + 'px',
             backgroundColor: `rgba(0,0,0,${opacity})`,
           }}
+          onClick={imitatePlayBehaviour}
           onMouseEnter={pauseHandler}
-          onMouseLeave={playHandler}
         >
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <MusicWrapper>
