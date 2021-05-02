@@ -9,10 +9,13 @@ import Grid from '@material-ui/core/Grid';
 
 const Container = styled('div')({
   position: 'absolute',
-  display: 'flex',
-  justifyContent: 'center',
   bottom: '75px',
+  left: 0,
+  right: 0,
   width: '100%',
+  margin: 'auto',
+  pointerEvents: 'none',
+  textAlign: 'center',
   zIndex: 2147483647,
 });
 
@@ -20,6 +23,8 @@ const SubtitleWrapper = styled('div')({
   display: 'inline-flex',
   alignItems: 'center',
   borderRadius: '40px',
+  pointerEvents: 'all',
+  fontFamily: 'sans-serif',
 });
 
 const SubtitleButton = styled('div')({
@@ -47,7 +52,7 @@ const MusicWrapper = styled('div')({
 });
 
 function Subtitles({ video }) {
-  const [videoPlaying, setVideoPlaying] = useState(true);
+  const [forcedPause, setForcedPause] = useState(false);
   const [subs, setSubs] = useState([{ text: 'No subtitles loaded' }]);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
@@ -158,18 +163,19 @@ function Subtitles({ video }) {
   const pauseHandler = () => {
     if (!video.paused) {
       video.pause();
-      setVideoPlaying(false);
+      setForcedPause(true);
     }
   };
 
   const playHandler = () => {
-    if (!videoPlaying) {
+    if (forcedPause) {
       video.play();
-      setVideoPlaying(true);
+      setForcedPause(false);
     }
   };
 
   const handlePrevButton = () => {
+    setForcedPause(false);
     if (video.currentTime > subs[pos].start + 1) {
       video.currentTime = subs[pos].start;
     } else if (pos !== 0) {
@@ -179,30 +185,23 @@ function Subtitles({ video }) {
   };
 
   const handleNextButton = () => {
+    setForcedPause(false);
     if (pos !== subs.length - 1) {
       video.currentTime = subs[pos + 1].start;
     }
     prepareTimeUpdate();
   };
 
-  function imitatePlayBehaviour() {
-    if (video.paused) {
-      video.play();
-    } else {
-      video.pause();
-    }
-  }
-
   return (
     <Draggable axis="y">
-      <Container onClick={imitatePlayBehaviour} onMouseLeave={playHandler}>
+      <Container>
         <SubtitleWrapper
           style={{
             fontSize: fontSize + 'px',
             backgroundColor: `rgba(0,0,0,${opacity})`,
           }}
-          onClick={imitatePlayBehaviour}
           onMouseEnter={pauseHandler}
+          onMouseLeave={playHandler}
         >
           <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
           <MusicWrapper>
