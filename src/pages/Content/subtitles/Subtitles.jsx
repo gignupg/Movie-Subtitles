@@ -4,6 +4,7 @@ import Draggable from 'react-draggable';
 import languageEncoding from 'detect-file-encoding-and-language';
 import processSubtitles from './processSubtitles';
 import timeUpdate from './timeUpdate';
+import synchronize from './synchronize';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
@@ -53,7 +54,8 @@ const MusicWrapper = styled('div')({
 
 function Subtitles({ video }) {
   const [forcedPause, setForcedPause] = useState(false);
-  const [subs, setSubs] = useState([{ text: 'No subtitles loaded' }]);
+  const subsRef = useRef([{ text: 'No subtitles loaded' }]);
+  const [subs, setSubs] = useState(subsRef.current);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
   const fontRef = useRef(24);
@@ -94,7 +96,7 @@ function Subtitles({ video }) {
 
             reader.onload = function (evt) {
               const content = evt.target.result;
-              setSubs(processSubtitles(content.split('\n')));
+              processSubtitles(content.split('\n'), subsRef, setSubs);
             };
             reader.readAsText(file, fileInfo.encoding);
           })
@@ -146,6 +148,19 @@ function Subtitles({ video }) {
             break;
           default:
           // Do nothing
+        }
+      },
+      false
+    );
+
+    // Listen for subtitle synchronization
+    document.addEventListener(
+      'syncNow',
+      function (e) {
+        const data = e.detail;
+
+        if (data.syncValue && subsRef.current.length > 1) {
+          synchronize(data, subsRef, setSubs);
         }
       },
       false

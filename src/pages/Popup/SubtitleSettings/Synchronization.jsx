@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
 import Switch from '@material-ui/core/Switch';
@@ -21,8 +21,9 @@ const useStyles = makeStyles({
 
 const Synchronization = ({ popup }) => {
   const classes = useStyles();
-  const [direction, setDirection] = React.useState(false);
-  const [syncValue, setSyncValue] = React.useState(0);
+  const [direction, setDirection] = useState(false);
+  const [syncValue, setSyncValue] = useState(0);
+  const [listening, setListening] = useState(false);
 
   const handleSliderChange = (event, newValue) => {
     setSyncValue(newValue);
@@ -40,14 +41,30 @@ const Synchronization = ({ popup }) => {
     }
   };
 
-  function handleSync() {
+  function handleSync(synchronization) {
     if (popup) {
       // Upload button clicked
       // Sending a message to the content script, then opening the file upload window from there
       chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-        chrome.tabs.sendMessage(tab[0].id, { syncNow: syncValue });
+        chrome.tabs.sendMessage(tab[0].id, synchronization);
       });
+    } else {
+      // Dispatch message to the subtitle component
+      const syncNow = new CustomEvent('syncNow', {
+        detail: synchronization,
+      });
+      document.dispatchEvent(syncNow);
     }
+  }
+
+  if (!popup && !listening) {
+    setListening(true);
+    chrome.runtime.onMessage.addListener((msg) => {
+      if (msg.syncValue) {
+        // This time calling handleSync from the content script instead of from the popup
+        handleSync(msg);
+      }
+    });
   }
 
   return (
@@ -115,7 +132,9 @@ const Synchronization = ({ popup }) => {
         <Box my={4}>
           <Grid container justify="center">
             <Button
-              onClick={handleSync}
+              onClick={() =>
+                handleSync({ syncValue: syncValue, syncLater: direction })
+              }
               variant="contained"
               color="primary"
               endIcon={<SyncIcon />}

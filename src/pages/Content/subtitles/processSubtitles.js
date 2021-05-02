@@ -1,6 +1,6 @@
 import timeInSeconds from './timeInSeconds';
 
-export default function processSubtitles(content) {
+export default function processSubtitles(content, subsRef, setSubs) {
   const newSubs = [];
   const emptyLines = [];
   const musicRegEx = new RegExp(/♪|\[Music\]/);
@@ -182,5 +182,7 @@ export default function processSubtitles(content) {
         'Music (' + (music.end - music.start).toFixed() + ' seconds)';
     }
   }
-  return newSubs;
+
+  subsRef.current = newSubs;
+  setSubs(newSubs);
 }
