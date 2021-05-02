@@ -42,7 +42,7 @@ const DisplaySettings = ({ popup }) => {
       <Box mb={1}>
         <List component="nav" aria-label="main mailbox folders">
           <ListItem button>
-            <ListItemText primary="Font Size" />
+            <ListItemText style={{ color: 'black' }} primary="Font Size" />
             <ListItemSecondaryAction>
               <IconButton
                 onClick={() => displaySettingsHandler('font-smaller')}
@@ -61,7 +61,7 @@ const DisplaySettings = ({ popup }) => {
             </ListItemSecondaryAction>
           </ListItem>
           <ListItem button>
-            <ListItemText primary="Background" />
+            <ListItemText style={{ color: 'black' }} primary="Background" />
             <ListItemSecondaryAction>
               <IconButton
                 onClick={() => displaySettingsHandler('opacity-minus')}

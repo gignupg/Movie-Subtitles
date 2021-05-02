@@ -15,7 +15,7 @@ const GeneralSection = () => {
       <MenuHeading heading="General:" />
       <List component="nav" aria-label="main mailbox folders">
         <ListItem button>
-          <ListItemText primary="Shortcuts" />
+          <ListItemText style={{ color: 'black' }} primary="Shortcuts" />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="shortcuts">
               <KeyboardIcon />
@@ -23,7 +23,7 @@ const GeneralSection = () => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem button>
-          <ListItemText primary="Feedback" />
+          <ListItemText style={{ color: 'black' }} primary="Feedback" />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="feedback">
               <FeedbackIcon />
@@ -31,7 +31,7 @@ const GeneralSection = () => {
           </ListItemSecondaryAction>
         </ListItem>
         <ListItem button>
-          <ListItemText primary="About" />
+          <ListItemText style={{ color: 'black' }} primary="About" />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="about">
               <InfoIcon />
