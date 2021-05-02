@@ -50,6 +50,11 @@ const msTheme = createMuiTheme({
         fontSize: '16px !important',
       },
     },
+    MuiSwitch: {
+      input: {
+        position: 'absolute !important',
+      },
+    },
   },
 });
 
