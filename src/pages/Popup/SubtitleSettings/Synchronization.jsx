@@ -19,34 +19,36 @@ const useStyles = makeStyles({
   },
 });
 
-const Synchronization = () => {
+const Synchronization = ({ popup }) => {
   const classes = useStyles();
-
-  const [state, setState] = React.useState({
-    checkedC: false,
-  });
-
-  const [value, setValue] = React.useState(0);
-
-  const handleChange = (event) => {
-    setState({ ...state, [event.target.name]: event.target.checked });
-  };
+  const [direction, setDirection] = React.useState(false);
+  const [syncValue, setSyncValue] = React.useState(0);
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    setSyncValue(newValue);
   };
 
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    setSyncValue(event.target.value === '' ? '' : Number(event.target.value));
   };
 
   const handleBlur = () => {
-    if (value < 0) {
-      setValue(0);
-    } else if (value > 10) {
-      setValue(10);
+    if (syncValue < 0) {
+      setSyncValue(0);
+    } else if (syncValue > 10) {
+      setSyncValue(10);
     }
   };
+
+  function handleSync() {
+    if (popup) {
+      // Upload button clicked
+      // Sending a message to the content script, then opening the file upload window from there
+      chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+        chrome.tabs.sendMessage(tab[0].id, { syncNow: syncValue });
+      });
+    }
+  }
 
   return (
     <>
@@ -67,10 +69,9 @@ const Synchronization = () => {
                   </Grid>
                   <Grid item>
                     <Switch
-                      checked={state.checkedC}
-                      onChange={handleChange}
+                      checked={direction}
+                      onChange={() => setDirection(direction ? false : true)}
                       color="default"
-                      name="checkedC"
                     />
                   </Grid>
                   <Grid item style={{ color: 'black', fontWeight: '400' }}>
@@ -85,15 +86,18 @@ const Synchronization = () => {
           <Grid container spacing={4} alignItems="center">
             <Grid item xs>
               <Slider
-                value={typeof value === 'number' ? value : 0}
+                value={typeof syncValue === 'number' ? syncValue : 0}
                 onChange={handleSliderChange}
                 aria-labelledby="input-slider"
+                step={0.1}
+                min={0}
+                max={10}
               />
             </Grid>
-            <Grid item>
+            <Grid item style={{ lineHeight: '10px' }}>
               <Input
                 className={classes.input}
-                value={value}
+                value={syncValue}
                 margin="dense"
                 onChange={handleInputChange}
                 onBlur={handleBlur}
@@ -110,7 +114,12 @@ const Synchronization = () => {
         </Box>
         <Box my={4}>
           <Grid container justify="center">
-            <Button variant="contained" color="primary" endIcon={<SyncIcon />}>
+            <Button
+              onClick={handleSync}
+              variant="contained"
+              color="primary"
+              endIcon={<SyncIcon />}
+            >
               Sync Now
             </Button>
           </Grid>

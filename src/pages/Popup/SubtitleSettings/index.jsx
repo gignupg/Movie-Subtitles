@@ -8,7 +8,7 @@ const SubtitleSettings = ({ popup, setMenu }) => {
     <>
       <LoadSubtitles popup={popup} setMenu={setMenu} />
       <DisplaySettings popup={popup} />
-      <Synchronization />
+      <Synchronization popup={popup} />
     </>
   );
 };
