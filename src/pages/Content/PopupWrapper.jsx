@@ -16,7 +16,7 @@ const Wrapper = styled('div')({
 
 const PopupWrapper = ({ popup, display, setMenu }) => {
   return (
-    <Wrapper style={{ display: display }}>
+    <Wrapper id="movie-subtitles-scroll-anchor" style={{ display: display }}>
       <Popup setMenu={setMenu} popup={popup} />
     </Wrapper>
   );

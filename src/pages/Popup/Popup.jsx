@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 import Header from './Header';
 import SubtitleSettings from './SubtitleSettings/index';
 import GeneralSection from './GeneralSection';
+import Shortcuts from './Shortcuts';
 
 // For consistency across websites with different global styles
 const msTheme = createMuiTheme({
@@ -59,11 +60,19 @@ const msTheme = createMuiTheme({
 });
 
 const Popup = ({ popup, setMenu }) => {
+  const [displayShortcuts, setDisplayShortcuts] = useState(false);
+
   return (
     <ThemeProvider theme={msTheme}>
-      <Header />
-      <SubtitleSettings popup={popup} setMenu={setMenu} />
-      <GeneralSection />
+      {displayShortcuts ? (
+        <Shortcuts setDisplayShortcuts={setDisplayShortcuts} />
+      ) : (
+        <>
+          <Header />
+          <SubtitleSettings popup={popup} setMenu={setMenu} />
+          <GeneralSection setDisplayShortcuts={setDisplayShortcuts} />
+        </>
+      )}
     </ThemeProvider>
   );
 };

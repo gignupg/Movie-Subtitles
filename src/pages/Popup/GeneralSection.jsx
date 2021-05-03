@@ -9,13 +9,17 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
 
-const GeneralSection = () => {
+const GeneralSection = ({ setDisplayShortcuts }) => {
   return (
     <>
       <MenuHeading heading="General:" />
       <List component="nav" aria-label="main mailbox folders">
         <ListItem button>
-          <ListItemText style={{ color: 'black' }} primary="Shortcuts" />
+          <ListItemText
+            onClick={() => setDisplayShortcuts(true)}
+            style={{ color: 'black' }}
+            primary="Shortcuts"
+          />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="shortcuts">
               <KeyboardIcon />
