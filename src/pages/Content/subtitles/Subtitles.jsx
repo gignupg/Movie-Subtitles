@@ -52,7 +52,7 @@ const MusicWrapper = styled('div')({
   margin: 0,
 });
 
-function Subtitles({ video }) {
+function Subtitles({ video, speedDisplay }) {
   const [forcedPause, setForcedPause] = useState(false);
   const subsRef = useRef([{ text: 'No subtitles loaded' }]);
   const [subs, setSubs] = useState(subsRef.current);
@@ -218,7 +218,12 @@ function Subtitles({ video }) {
           onMouseEnter={pauseHandler}
           onMouseLeave={playHandler}
         >
-          <SubtitleButton onClick={handlePrevButton}>«</SubtitleButton>
+          <SubtitleButton
+            onClick={handlePrevButton}
+            id="movie-subtitles-prev-button"
+          >
+            «
+          </SubtitleButton>
           <MusicWrapper>
             <SubtitleText
               dangerouslySetInnerHTML={{ __html: subs[pos].text }}
@@ -236,8 +241,20 @@ function Subtitles({ video }) {
                 </Button>
               </Grid>
             )}
+            {speedDisplay && (
+              <Grid container justify="center" style={{ marginBottom: '7px' }}>
+                <Button variant="contained" color="secondary">
+                  {speedDisplay}
+                </Button>
+              </Grid>
+            )}
           </MusicWrapper>
-          <SubtitleButton onClick={handleNextButton}>»</SubtitleButton>
+          <SubtitleButton
+            onClick={handleNextButton}
+            id="movie-subtitles-next-button"
+          >
+            »
+          </SubtitleButton>
         </SubtitleWrapper>
       </Container>
     </Draggable>
