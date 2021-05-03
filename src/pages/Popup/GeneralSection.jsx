@@ -8,8 +8,9 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import IconButton from '@material-ui/core/IconButton';
+import openPage from './openPage';
 
-const GeneralSection = ({ setDisplayShortcuts }) => {
+const GeneralSection = ({ setDisplayShortcuts, popup }) => {
   return (
     <>
       <MenuHeading heading="General:" />
@@ -26,7 +27,15 @@ const GeneralSection = ({ setDisplayShortcuts }) => {
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem button>
+        <ListItem
+          button
+          onClick={() =>
+            openPage(
+              popup,
+              'https://github.com/gignupg/Movie-Subtitles-Chrome-Extension/issues'
+            )
+          }
+        >
           <ListItemText style={{ color: 'black' }} primary="Feedback" />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="feedback">
@@ -34,7 +43,15 @@ const GeneralSection = ({ setDisplayShortcuts }) => {
             </IconButton>
           </ListItemSecondaryAction>
         </ListItem>
-        <ListItem button>
+        <ListItem
+          button
+          onClick={() =>
+            openPage(
+              popup,
+              'https://github.com/gignupg/Movie-Subtitles-Chrome-Extension'
+            )
+          }
+        >
           <ListItemText style={{ color: 'black' }} primary="About" />
           <ListItemSecondaryAction>
             <IconButton edge="end" aria-label="about">

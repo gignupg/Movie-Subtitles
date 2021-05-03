@@ -68,9 +68,12 @@ const Popup = ({ popup, setMenu }) => {
         <Shortcuts setDisplayShortcuts={setDisplayShortcuts} />
       ) : (
         <>
-          <Header />
+          <Header popup={popup} />
           <SubtitleSettings popup={popup} setMenu={setMenu} />
-          <GeneralSection setDisplayShortcuts={setDisplayShortcuts} />
+          <GeneralSection
+            setDisplayShortcuts={setDisplayShortcuts}
+            popup={popup}
+          />
         </>
       )}
     </ThemeProvider>
