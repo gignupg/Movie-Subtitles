@@ -1,7 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
 import Content from './Content';
-import Img from './Img';
 import videoPlayerDetector from './videoPlayerDetector/videoPlayerDetector';
 
 let displayingExtension = false;
@@ -13,11 +12,8 @@ chrome.runtime.onMessage.addListener(function (msg) {
     const container = videoPlayerDetector('container');
     const iconWrapper = videoPlayerDetector('iconWrapper');
 
-    // Display the subtitles
-    render(<Content video={video} />, container);
-
-    // Display the icon
-    render(<Img />, iconWrapper);
+    // Render the subtitles and the menu
+    render(<Content video={video} iconWrapper={iconWrapper} />, container);
 
     // Make sure only to inject the extension code once!
     displayingExtension = true;

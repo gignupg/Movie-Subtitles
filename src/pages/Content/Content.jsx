@@ -1,16 +1,50 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { render } from 'react-dom';
 import Subtitles from './subtitles/Subtitles';
+import PopupWrapper from './PopupWrapper';
+import { styled } from '@material-ui/core/styles';
 
-export default function Content({ video }) {
+const BlurredBackground = styled('div')({
+  position: 'absolute',
+  top: 0,
+  right: 0,
+  bottom: 0,
+  left: 0,
+  userSelect: 'none',
+  backdropFilter: 'blur(10px)',
+  zIndex: 2147483647,
+});
+
+export default function Content({ video, iconWrapper }) {
   const displaySubtitleRef = useRef(true);
   const [displaySubtitles, setDisplaySubtitles] = useState(
     displaySubtitleRef.current
   );
   const speedRef = useRef(0);
   const [speedDisplay, setSpeedDisplay] = useState(false);
+  const [menu, setMenu] = useState(false);
+
+  // Close the in-video popup menu when the real popup is opened
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (msg.activation) {
+      setMenu(false);
+    }
+  });
 
   // Listen for shortcut keypress events
   useEffect(() => {
+    // Display the icon
+    if (iconWrapper) {
+      render(
+        <img
+          onClick={() => setMenu(true)}
+          src={chrome.runtime.getURL('icons8-settings-32.png')}
+          alt="Logo"
+        />,
+        iconWrapper
+      );
+    }
+
     document.addEventListener(
       'keydown',
       function (event) {
@@ -83,11 +117,11 @@ export default function Content({ video }) {
 
   return (
     <>
-      <div id="movie-subtitles-blurred-background"></div>
+      {menu && <BlurredBackground onClick={() => setMenu(false)} />}
       {displaySubtitles && (
         <Subtitles video={video} speedDisplay={speedDisplay} />
       )}
-      <div id="movie-subtitles-menu-container"></div>
+      <PopupWrapper popup={false} display={menu ? 'block' : 'none'} />
     </>
   );
 }
