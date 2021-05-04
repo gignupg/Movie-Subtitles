@@ -3,7 +3,7 @@ import updateSite from './updateSite';
 import attachIconWrapper from './attachIconWrapper';
 import attachContainer from './attachContainer';
 
-export default function videoPlayerDetector(element) {
+export default function videoPlayerDetector(element: string) {
   let site = window.location.hostname;
   site = updateSite(site);
 
@@ -15,7 +15,7 @@ export default function videoPlayerDetector(element) {
   const index = elem.index || 0;
 
   if (element === 'video') {
-    const video = document.querySelectorAll(selector)[index];
+    const video = document.querySelectorAll(selector)[index] as HTMLElement;
 
     if (!video) return null;
 
@@ -26,18 +26,18 @@ export default function videoPlayerDetector(element) {
     }
     return video;
   } else if (element === 'container') {
-    const rootElement = document.querySelectorAll(selector)[index];
+    const rootElement = document.querySelectorAll(selector)[index] as HTMLElement;
 
     if (!rootElement) return null;
 
     const container = attachContainer(rootElement, site);
     return container;
   } else if (element === 'iconWrapper') {
-    const rootElement = document.querySelectorAll(selector)[index];
+    const rootElement = document.querySelectorAll(selector)[index] as HTMLElement;
 
     if (!rootElement) return null;
 
-    const spacing = elementPosition[site].iconWrapper.spacing;
+    const spacing = elementPosition[site].iconWrapper.spacing as string;
     const iconWrapper = attachIconWrapper(rootElement, spacing);
     return iconWrapper;
   }

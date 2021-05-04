@@ -1,6 +1,20 @@
 import s from './sites';
 
-const elementPosition = {
+interface Position {
+  [site: string]: Site
+}
+
+interface Site {
+  [element: string]: Element
+}
+
+interface Element {
+  selector: string,
+  index?: number,
+  spacing?: string,
+}
+
+const elementPosition: Position = {
   [s.youtube]: {
     video: { selector: 'video' },
     container: { selector: '#movie_player' },
@@ -17,7 +31,7 @@ const elementPosition = {
   [s.default]: {
     video: { selector: 'video' },
     container: { selector: 'video' },
-    iconWrapper: null,
+    iconWrapper: { selector: ''},
   },
 };
 
