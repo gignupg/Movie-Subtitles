@@ -1,7 +1,7 @@
 import s from './sites';
-import elementPosition from './elementPosition';
+import elementPosition from './elementPosition'
 
-export default function updateSite(site) {
+export default function updateSite(site: string) {
   let modifiedSite = '';
 
   // Take care of special cases
