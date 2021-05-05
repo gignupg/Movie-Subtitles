@@ -19,8 +19,8 @@ export default function NoVideoDetected() {
     <div className={classes.root}>
       <Alert severity="error">
         <AlertTitle>No Video Detected</AlertTitle>
-        Try reloading the page, then wait until it has fully loaded before
-        opening the extension!
+        Do you see a video? If so, try to reload the page and wait a few seconds
+        before opening the extension again!
       </Alert>
     </div>
   );

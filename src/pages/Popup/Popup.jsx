@@ -64,6 +64,23 @@ const Popup = ({ popup, setMenu }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
   const [videoDetected, setVideoDetected] = useState(false);
 
+  if (popup) {
+    // Send message to the content script to check if video has been detected
+    chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+      chrome.tabs.sendMessage(
+        tab[0].id,
+        { videoCheck: true },
+        function (response) {
+          if (response) {
+            setVideoDetected(true);
+          } else {
+            setVideoDetected(false);
+          }
+        }
+      );
+    });
+  }
+
   return (
     <ThemeProvider theme={msTheme}>
       {displayShortcuts ? (
