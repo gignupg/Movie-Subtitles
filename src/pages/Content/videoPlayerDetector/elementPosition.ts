@@ -1,37 +1,44 @@
-import s from './sites';
+import s from './sites'
 
-interface Position {
-  [site: string]: Site
+interface VideoPlayer {
+  [site: string]: PlayerElement
 }
 
-interface Site {
-  [element: string]: Element
+export interface PlayerElement {
+  video: ElementInfo,
+  container: ElementInfo,
+  iconWrapper: ElementInfo,
 }
 
-interface Element {
+interface ElementInfo {
   selector: string,
-  index?: number,
+  index: number,
   spacing?: string,
 }
 
-const elementPosition: Position = {
+const elementPosition: VideoPlayer = {
   [s.youtube]: {
-    video: { selector: 'video' },
-    container: { selector: '#movie_player' },
-    iconWrapper: { selector: '.ytp-right-controls', spacing: '8px' },
+    video: { selector: 'video', index: 0 },
+    container: { selector: '#movie_player', index: 0 },
+    iconWrapper: { selector: '.ytp-right-controls', index: 0, spacing: '8px' },
   },
   [s.amazon]: {
     video: { selector: 'video', index: 1 },
-    container: { selector: '.cascadesContainer' },
+    container: { selector: '.cascadesContainer', index: 0 },
     iconWrapper: {
       selector: '.hideableTopButtons div:first-child',
+      index: 0,
       spacing: '18px',
     },
   },
   [s.default]: {
-    video: { selector: 'video' },
-    container: { selector: 'video' },
-    iconWrapper: { selector: ''},
+    video: { selector: 'video', index: 0 },
+    container: { selector: 'video', index: 0 },
+    iconWrapper: {
+      selector: '',
+      index: 0,
+      spacing: '',
+    },
   },
 };
 
