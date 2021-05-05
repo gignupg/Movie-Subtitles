@@ -4,6 +4,7 @@ import Header from './Header';
 import SubtitleSettings from './SubtitleSettings/index';
 import GeneralSection from './GeneralSection';
 import Shortcuts from './Shortcuts';
+import NoVideoDetected from './NoVideoDetected';
 
 // For consistency across websites with different global styles
 const msTheme = createMuiTheme({
@@ -61,6 +62,7 @@ const msTheme = createMuiTheme({
 
 const Popup = ({ popup, setMenu }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
+  const [videoDetected, setVideoDetected] = useState(false);
 
   return (
     <ThemeProvider theme={msTheme}>
@@ -69,7 +71,11 @@ const Popup = ({ popup, setMenu }) => {
       ) : (
         <>
           <Header popup={popup} />
-          <SubtitleSettings popup={popup} setMenu={setMenu} />
+          {popup && !videoDetected ? (
+            <NoVideoDetected />
+          ) : (
+            <SubtitleSettings popup={popup} setMenu={setMenu} />
+          )}
           <GeneralSection
             setDisplayShortcuts={setDisplayShortcuts}
             popup={popup}
