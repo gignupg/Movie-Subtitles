@@ -60,9 +60,9 @@ const msTheme = createMuiTheme({
   },
 });
 
-const Popup = ({ popup, setMenu }) => {
+const Popup = ({ popup, setMenu, previouslyDetected, sitesWithSubtitles }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
-  const [videoDetected, setVideoDetected] = useState(true);
+  const [videoDetected, setVideoDetected] = useState(previouslyDetected);
   const [activating, setActivating] = useState(true);
 
   if (popup && activating) {
@@ -76,11 +76,25 @@ const Popup = ({ popup, setMenu }) => {
           { activation: true },
           function (response) {
             // Display an error if no video can be detected
-            if (response) {
+            if (response && !videoDetected) {
               setVideoDetected(true);
-              clearInterval(intervalId);
+
+              const thisSite = tab[0].url
+                .replace(/^.*\/\//, '')
+                .replace(/\/.*/, '');
+
+              sitesWithSubtitles.push(thisSite);
+
+              chrome.storage.sync.set(
+                {
+                  sitesWithSubtitles: sitesWithSubtitles,
+                },
+                function () {
+                  clearInterval(intervalId);
+                }
+              );
             } else {
-              setVideoDetected(false);
+              clearInterval(intervalId);
             }
           }
         );
