@@ -62,7 +62,7 @@ const msTheme = createMuiTheme({
 
 const Popup = ({ popup, setMenu }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
-  const [videoDetected, setVideoDetected] = useState(false);
+  const [videoDetected, setVideoDetected] = useState(true);
   const [activating, setActivating] = useState(true);
 
   if (popup && activating) {

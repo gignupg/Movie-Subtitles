@@ -44,6 +44,11 @@ const elementPosition: VideoPlayer = {
     container: { selector: '.video-player__container', index: 0 },
     iconWrapper: { selector: '.player-controls__right-control-group', index: 0, spacing: '0 0 0 12px' },
   },
+  [s.dailymotion]: {
+    video: { selector: 'video', index: 0 },
+    container: { selector: '.np_Main', index: 0 },
+    iconWrapper: null,
+  },
   [s.default]: {
     video: { selector: 'video', index: 0 },
     container: { selector: 'video', index: 0 },

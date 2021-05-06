@@ -4,6 +4,7 @@ const sites = {
   amazon: 'www.amazon',
   vimeo: 'vimeo.com',
   twitch: 'www.twitch.tv',
+  dailymotion: 'www.dailymotion.com',
   default: 'default',
 };
 
