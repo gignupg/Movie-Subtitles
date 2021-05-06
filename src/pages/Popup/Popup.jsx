@@ -63,21 +63,28 @@ const msTheme = createMuiTheme({
 const Popup = ({ popup, setMenu }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
   const [videoDetected, setVideoDetected] = useState(false);
+  const [activating, setActivating] = useState(true);
 
-  if (popup) {
-    // Send message to the content script to check if video has been detected
+  if (popup && activating) {
+    setActivating(false);
+    // Send a message to the content script to display the subtitles
     chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-      chrome.tabs.sendMessage(
-        tab[0].id,
-        { videoCheck: true },
-        function (response) {
-          if (response) {
-            setVideoDetected(true);
-          } else {
-            setVideoDetected(false);
+      // Send a new message every 500 milliseconds until the popup closes or a video can be detected
+      const intervalId = setInterval(() => {
+        chrome.tabs.sendMessage(
+          tab[0].id,
+          { activation: true },
+          function (response) {
+            // Display an error if no video can be detected
+            if (response) {
+              setVideoDetected(true);
+              clearInterval(intervalId);
+            } else {
+              setVideoDetected(false);
+            }
           }
-        }
-      );
+        );
+      }, 500);
     });
   }
 

@@ -7,13 +7,16 @@ interface VideoPlayer {
 export interface PlayerElement {
   video: ElementInfo,
   container: ElementInfo,
-  iconWrapper: ElementInfo,
+  iconWrapper: IconInfo | null,
 }
 
 interface ElementInfo {
   selector: string,
   index: number,
-  spacing?: string,
+}
+
+interface IconInfo extends ElementInfo {
+  spacing: string,
 }
 
 const elementPosition: VideoPlayer = {
@@ -34,11 +37,7 @@ const elementPosition: VideoPlayer = {
   [s.default]: {
     video: { selector: 'video', index: 0 },
     container: { selector: 'video', index: 0 },
-    iconWrapper: {
-      selector: '',
-      index: 0,
-      spacing: '',
-    },
+    iconWrapper: null,
   },
 };
 

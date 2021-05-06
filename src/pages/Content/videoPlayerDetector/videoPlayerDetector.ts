@@ -7,6 +7,9 @@ export default function videoPlayerDetector(elementToDetect: any) {
 
   if (elementToDetect === "video" || elementToDetect === "container" || elementToDetect === "iconWrapper") {
     const element = elementToDetect as keyof PlayerElement;
+
+    console.log(element)
+
     let site = window.location.hostname;
 
     site = updateSite(site);
@@ -41,7 +44,7 @@ export default function videoPlayerDetector(elementToDetect: any) {
 
       if (!rootElement) return null;
 
-      const spacing = elementPosition[site].iconWrapper.spacing as string;
+      const spacing = elementPosition[site].iconWrapper!.spacing as string;
       const iconWrapper = attachIconWrapper(rootElement, spacing);
       return iconWrapper;
     }

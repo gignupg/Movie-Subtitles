@@ -13,17 +13,14 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
     const iconWrapper = videoPlayerDetector('iconWrapper');
 
     if (container) {
+      // Video detected
+      sendResponse(true);
       // Render the subtitles and the menu
       render(<Content video={video} iconWrapper={iconWrapper} />, container);
-    }
-
-    // Make sure only to inject the extension code once!
-    displayingExtension = true;
-  } else if (msg.videoCheck) {
-    const container = videoPlayerDetector('container');
-    if (container) {
-      sendResponse(true);
+      // Make sure only to inject the extension code once!
+      displayingExtension = true;
     } else {
+      // No video detected
       sendResponse(false);
     }
   }
