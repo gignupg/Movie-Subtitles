@@ -9,7 +9,6 @@ const Wrapper = styled('div')({
   bottom: 0,
   background: 'white',
   width: '280px',
-  maxHeight: '757px',
   overflow: 'auto',
   zIndex: 2147483647,
 });

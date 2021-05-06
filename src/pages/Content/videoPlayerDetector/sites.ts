@@ -3,6 +3,7 @@ const sites = {
   youtube: 'www.youtube.com',
   amazon: 'www.amazon',
   vimeo: 'vimeo.com',
+  twitch: 'www.twitch.tv',
   default: 'default',
 };
 

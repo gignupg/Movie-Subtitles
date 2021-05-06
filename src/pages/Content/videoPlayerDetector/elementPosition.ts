@@ -39,6 +39,11 @@ const elementPosition: VideoPlayer = {
     container: { selector: '.js-player-fullscreen', index: 0 },
     iconWrapper: { selector: '.play-bar', index: 0, spacing: '0 0 0 12px' },
   },
+  [s.twitch]: {
+    video: { selector: 'video', index: 0 },
+    container: { selector: '.video-player__container', index: 0 },
+    iconWrapper: { selector: '.player-controls__right-control-group', index: 0, spacing: '0 0 0 12px' },
+  },
   [s.default]: {
     video: { selector: 'video', index: 0 },
     container: { selector: 'video', index: 0 },
