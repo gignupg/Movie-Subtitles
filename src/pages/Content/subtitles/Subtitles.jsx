@@ -26,6 +26,7 @@ const SubtitleWrapper = styled('div')({
   borderRadius: '40px',
   pointerEvents: 'all',
   fontFamily: 'sans-serif',
+  color: 'white',
 });
 
 const SubtitleButton = styled('div')({
@@ -34,7 +35,6 @@ const SubtitleButton = styled('div')({
   fontWeight: 900,
   marginLeft: '10px',
   marginRight: '10px',
-  color: 'white',
   border: 'none',
   cursor: 'pointer',
   userSelect: 'none',
