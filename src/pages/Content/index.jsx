@@ -5,7 +5,11 @@ import videoPlayerDetector from './videoPlayerDetector/videoPlayerDetector';
 
 let displayingExtension = false;
 
-const blacklist = ['player.vimeo.com'];
+// blacklist = [vimeo, tubi]
+const blacklist = ['player.vimeo.com', 'imasdk.googleapis.com'];
+
+console.log('Double content script check');
+console.log('url', window.location.hostname);
 
 // Make sure blacklisted sites get ignored
 if (!blacklist.includes(window.location.hostname)) {

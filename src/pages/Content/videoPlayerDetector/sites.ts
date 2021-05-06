@@ -5,6 +5,7 @@ const sites = {
   vimeo: 'vimeo.com',
   twitch: 'www.twitch.tv',
   dailymotion: 'www.dailymotion.com',
+  tubi: 'tubitv.com',
   default: 'default',
 };
 

@@ -15,6 +15,8 @@ export default function attachIconWrapper(rootElement: HTMLElement, spacing: str
     // iconWrapper.style = `display: flex; flex-direction: row; align-items: center; justify-content: center; overflow: visible; margin-right: ${spacing}; cursor: pointer;`; // Not sure if this is necessary. I should check!
     if (site === s.vimeo) {
       rootElement.insertBefore(iconWrapper, document.querySelectorAll('.volume')[0])
+    } else if (site === s.tubi) {
+      rootElement.insertBefore(iconWrapper, document.getElementById('volumeArea'))
     } else {
       rootElement.prepend(iconWrapper);
     }

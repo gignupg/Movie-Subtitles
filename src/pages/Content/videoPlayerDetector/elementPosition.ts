@@ -42,12 +42,17 @@ const elementPosition: VideoPlayer = {
   [s.twitch]: {
     video: { selector: 'video', index: 0 },
     container: { selector: '.video-player__container', index: 0 },
-    iconWrapper: { selector: '.player-controls__right-control-group', index: 0, spacing: '0 0 0 12px' },
+    iconWrapper: { selector: '.player-controls__right-control-group', index: 0, spacing: '0' },
   },
   [s.dailymotion]: {
     video: { selector: 'video', index: 0 },
     container: { selector: '.np_Main', index: 0 },
     iconWrapper: null,
+  },
+  [s.tubi]: {
+    video: { selector: 'video', index: 0 },
+    container: { selector: '._13syz', index: 0 },
+    iconWrapper: { selector: '._2UM_m', index: 0, spacing: '0' },
   },
   [s.default]: {
     video: { selector: 'video', index: 0 },

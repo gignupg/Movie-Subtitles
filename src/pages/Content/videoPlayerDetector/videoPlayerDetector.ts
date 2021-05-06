@@ -38,7 +38,6 @@ export default function videoPlayerDetector(elementToDetect: any) {
       const container = attachContainer(rootElement, site);
       return container;
     } else if (element === 'iconWrapper') {
-      console.log('iconWrapper now being inserted')
       const rootElement = document.querySelectorAll(selector)[index] as HTMLElement;
 
       if (!rootElement) return null;
