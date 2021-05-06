@@ -121,7 +121,11 @@ export default function Content({ video, iconWrapper }) {
       {displaySubtitles && (
         <Subtitles video={video} speedDisplay={speedDisplay} />
       )}
-      <PopupWrapper popup={false} display={menu ? 'block' : 'none'} />
+      <PopupWrapper
+        popup={false}
+        setMenu={setMenu}
+        display={menu ? 'block' : 'none'}
+      />
     </>
   );
 }
