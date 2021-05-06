@@ -23,7 +23,7 @@ const elementPosition: VideoPlayer = {
   [s.youtube]: {
     video: { selector: 'video', index: 0 },
     container: { selector: '#movie_player', index: 0 },
-    iconWrapper: { selector: '.ytp-right-controls', index: 0, spacing: '8px' },
+    iconWrapper: { selector: '.ytp-right-controls', index: 0, spacing: '0 8px' },
   },
   [s.amazon]: {
     video: { selector: 'video', index: 1 },
@@ -31,8 +31,13 @@ const elementPosition: VideoPlayer = {
     iconWrapper: {
       selector: '.hideableTopButtons div:first-child',
       index: 0,
-      spacing: '18px',
+      spacing: '0 18px',
     },
+  },
+  [s.vimeo]: {
+    video: { selector: 'video', index: 0 },
+    container: { selector: '.js-player-fullscreen', index: 0 },
+    iconWrapper: { selector: '.play-bar', index: 0, spacing: '0 0 0 12px' },
   },
   [s.default]: {
     video: { selector: 'video', index: 0 },

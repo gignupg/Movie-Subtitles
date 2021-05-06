@@ -71,10 +71,13 @@ const Popup = ({ popup, setMenu }) => {
     chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
       // Send a new message every 500 milliseconds until the popup closes or a video can be detected
       const intervalId = setInterval(() => {
+        console.log('sending message to content script');
         chrome.tabs.sendMessage(
           tab[0].id,
           { activation: true },
           function (response) {
+            console.log('receiving response from content script');
+            console.log('response:', response);
             // Display an error if no video can be detected
             if (response) {
               setVideoDetected(true);

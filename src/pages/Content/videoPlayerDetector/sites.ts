@@ -2,6 +2,7 @@
 const sites = {
   youtube: 'www.youtube.com',
   amazon: 'www.amazon',
+  vimeo: 'vimeo.com',
   default: 'default',
 };
 

@@ -38,12 +38,13 @@ export default function videoPlayerDetector(elementToDetect: any) {
       const container = attachContainer(rootElement, site);
       return container;
     } else if (element === 'iconWrapper') {
+      console.log('iconWrapper now being inserted')
       const rootElement = document.querySelectorAll(selector)[index] as HTMLElement;
 
       if (!rootElement) return null;
 
       const spacing = elementPosition[site].iconWrapper!.spacing as string;
-      const iconWrapper = attachIconWrapper(rootElement, spacing);
+      const iconWrapper = attachIconWrapper(rootElement, spacing, site);
       return iconWrapper;
     }
   }
