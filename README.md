@@ -1,8 +1,8 @@
-<h1>Movie Subtitles </h1>
-
 <p align="center">
   <img src="https://github.com/gignupg/Movie-Subtitles/blob/master/src/assets/img/movie-subtitles-48.png?raw=true" alt="Movie Subtitles Logo"/>
 </p>
+
+<h1 align="center">Movie Subtitles</h1>
 
 Do you love to watch movies but hate when there are too many long scenes between dialogues? Movie Subtitles let's you know whenever there is a long scene without speech, so you can skip right to the next dialogue.
 
