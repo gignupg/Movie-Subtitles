@@ -20,7 +20,7 @@ Once you got the subtitles you're good to go!
 
 ![previous sentence](src/assets/screenshots/load-subtitles.png)
 
-> Note: Movie Subtitles supports subtitle files that end with `.txt`, `.srt`, or `.sub`. If your subtitles are inside a compressed archive/zip folder, you will have to extract/unzip them first.
+> Note: Movie Subtitles supports `.txt`, `.srt`, and `.sub` files. If your subtitles are inside a compressed archive/zip folder, you will have to extract/unzip them first.
 
 ## Subtitles Anywhere
 
