@@ -1,7 +1,7 @@
-<span>
+<div style="display: inline-block; width: 100%;">
   <img src="https://github.com/gignupg/Movie-Subtitles/blob/master/src/assets/img/movie-subtitles-48.png?raw=true" alt="Movie Subtitles Logo"/>
-  <h1 align="center">Movie Subtitles</h1>
-</span>
+  <h1 style="margin: auto;">Movie Subtitles</h1>
+</div>
 
 
 
