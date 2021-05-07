@@ -1,4 +1,4 @@
-# Movie Subtitles 
+<h1>Movie Subtitles </h1>
 
 <p align="center">
   <img src="https://github.com/gignupg/Movie-Subtitles/blob/master/src/assets/img/movie-subtitles-48.png?raw=true" alt="Movie Subtitles Logo"/>
