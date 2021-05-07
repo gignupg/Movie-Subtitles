@@ -39,7 +39,7 @@ export default function Content({ video, iconWrapper }) {
       render(
         <img
           onClick={() => setMenu(true)}
-          src={chrome.runtime.getURL('icons8-settings-32.png')}
+          src={chrome.runtime.getURL('movie-subtitles-24.png')}
           alt="Logo"
         />,
         iconWrapper
