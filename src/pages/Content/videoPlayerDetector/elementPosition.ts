@@ -52,7 +52,7 @@ const elementPosition: VideoPlayer = {
   [s.tubi]: {
     video: { selector: 'video', index: 0 },
     container: { selector: '._13syz', index: 0 },
-    iconWrapper: { selector: '._2UM_m', index: 0, spacing: '0' },
+    iconWrapper: null,
   },
   [s.default]: {
     video: { selector: 'video', index: 0 },
