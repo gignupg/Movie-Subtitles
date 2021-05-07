@@ -47,7 +47,7 @@ Want to use convenient shortcuts? There's a variety of shortcuts you can use.
 
 ## Contributing
 
-Movie Subtitles is an open-source project. If you have any ideas for improvement, find a bug, or want to contribute in some other way, you're welcome to do so!
+Movie Subtitles is an open-source project. If you have any ideas for improvement, found a bug, or want to contribute in some other way, you're welcome to do so!
 
 ## Credits
 
