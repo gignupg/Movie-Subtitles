@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@material-ui/core/styles';
 import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import { makeStyles } from '@material-ui/core/styles';
@@ -43,8 +43,9 @@ const useStyles = makeStyles({
   },
 });
 
-export default function Shortcuts({ setDisplayShortcuts }) {
+export default function Shortcuts({ setDisplayShortcuts, thisSite }) {
   const classes = useStyles();
+  const [netflix] = useState(thisSite === 'www.netflix.com');
 
   useEffect(() => {
     // Reset the scroll
@@ -58,40 +59,44 @@ export default function Shortcuts({ setDisplayShortcuts }) {
         onClick={() => setDisplayShortcuts(false)}
         className={classes.icon}
       />
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Previous sentence</ShortcutItem>
-        <ShortcutItem>a</ShortcutItem>
-      </ShortcutWrapper>
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Next sentence</ShortcutItem>
-        <ShortcutItem>s</ShortcutItem>
-      </ShortcutWrapper>
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Rewind 2.5 seconds</ShortcutItem>
-        <ShortcutItem>z</ShortcutItem>
-      </ShortcutWrapper>
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Fast-forward 2.5 seconds</ShortcutItem>
-        <ShortcutItem>x</ShortcutItem>
-      </ShortcutWrapper>
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Rewind 5 seconds</ShortcutItem>
-        <ShortcutItem
-          dangerouslySetInnerHTML={{ __html: '&#8678;' }}
-        ></ShortcutItem>
-      </ShortcutWrapper>
-      <Divider />
-      <ShortcutWrapper>
-        <ShortcutItem>Fast-forward 5 seconds</ShortcutItem>
-        <ShortcutItem
-          dangerouslySetInnerHTML={{ __html: '&#8680;' }}
-        ></ShortcutItem>
-      </ShortcutWrapper>
+      {!netflix && (
+        <>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Previous sentence</ShortcutItem>
+            <ShortcutItem>a</ShortcutItem>
+          </ShortcutWrapper>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Next sentence</ShortcutItem>
+            <ShortcutItem>s</ShortcutItem>
+          </ShortcutWrapper>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Rewind 2.5 seconds</ShortcutItem>
+            <ShortcutItem>z</ShortcutItem>
+          </ShortcutWrapper>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Fast-forward 2.5 seconds</ShortcutItem>
+            <ShortcutItem>x</ShortcutItem>
+          </ShortcutWrapper>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Rewind 5 seconds</ShortcutItem>
+            <ShortcutItem
+              dangerouslySetInnerHTML={{ __html: '&#8678;' }}
+            ></ShortcutItem>
+          </ShortcutWrapper>
+          <Divider />
+          <ShortcutWrapper>
+            <ShortcutItem>Fast-forward 5 seconds</ShortcutItem>
+            <ShortcutItem
+              dangerouslySetInnerHTML={{ __html: '&#8680;' }}
+            ></ShortcutItem>
+          </ShortcutWrapper>
+        </>
+      )}
       <Divider />
       <ShortcutWrapper>
         <ShortcutItem>Subtitles on/off</ShortcutItem>

@@ -23,6 +23,7 @@ export default function Content({ video, iconWrapper }) {
   const speedRef = useRef(0);
   const [speedDisplay, setSpeedDisplay] = useState(false);
   const [menu, setMenu] = useState(false);
+  const [netflix] = useState(window.location.hostname === 'www.netflix.com');
 
   // Close the in-video popup menu when the real popup is opened
   chrome.runtime.onMessage.addListener((msg) => {
@@ -45,6 +46,7 @@ export default function Content({ video, iconWrapper }) {
       );
     }
 
+    // Shortcuts
     document.addEventListener(
       'keydown',
       function (event) {
@@ -56,32 +58,32 @@ export default function Content({ video, iconWrapper }) {
           setDisplaySubtitles(displaySubtitleRef.current);
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 'z') {
+        } else if (key === 'z' && !netflix) {
           // Rewind 2.5 Seconds
           video.currentTime = video.currentTime - 2.5;
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 'x') {
+        } else if (key === 'x' && !netflix) {
           // Fast-Forward 2.5 Seconds
           video.currentTime = video.currentTime + 2.5;
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 'ArrowLeft') {
+        } else if (key === 'ArrowLeft' && !netflix) {
           // Rewind 5 Seconds
           video.currentTime = video.currentTime - 5;
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 'ArrowRight') {
+        } else if (key === 'ArrowRight' && !netflix) {
           // Fast-Forward 5 Seconds
           video.currentTime = video.currentTime + 5;
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 'a') {
+        } else if (key === 'a' && !netflix) {
           // Previous Sentence
           document.getElementById('movie-subtitles-prev-button').click();
           event.preventDefault();
           event.stopPropagation();
-        } else if (key === 's') {
+        } else if (key === 's' && !netflix) {
           // Next Sentence
           document.getElementById('movie-subtitles-next-button').click();
           event.preventDefault();

@@ -26,6 +26,7 @@ chrome.storage.sync.get('sitesWithSubtitles', function (storage) {
         popup={true}
         previouslyDetected={previouslyDetected}
         sitesWithSubtitles={sitesWithSubtitles}
+        thisSite={thisSite}
       />,
       window.document.querySelector('#app-container')
     );

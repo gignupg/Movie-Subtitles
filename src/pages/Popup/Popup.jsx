@@ -60,7 +60,13 @@ const msTheme = createMuiTheme({
   },
 });
 
-const Popup = ({ popup, setMenu, previouslyDetected, sitesWithSubtitles }) => {
+const Popup = ({
+  popup,
+  setMenu,
+  previouslyDetected,
+  sitesWithSubtitles,
+  thisSite,
+}) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
   const [videoDetected, setVideoDetected] = useState(previouslyDetected);
   const [activating, setActivating] = useState(true);
@@ -69,7 +75,7 @@ const Popup = ({ popup, setMenu, previouslyDetected, sitesWithSubtitles }) => {
     setActivating(false);
     // Send a message to the content script to display the subtitles
     chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
-      // Send a new message every 500 milliseconds until the popup closes or a video can be detected
+      // Send a new message every 500 milliseconds until the popup closes or a video is detected
       const intervalId = setInterval(() => {
         chrome.tabs.sendMessage(
           tab[0].id,
@@ -105,7 +111,10 @@ const Popup = ({ popup, setMenu, previouslyDetected, sitesWithSubtitles }) => {
   return (
     <ThemeProvider theme={msTheme}>
       {displayShortcuts ? (
-        <Shortcuts setDisplayShortcuts={setDisplayShortcuts} />
+        <Shortcuts
+          setDisplayShortcuts={setDisplayShortcuts}
+          thisSite={thisSite}
+        />
       ) : (
         <>
           <Header popup={popup} />

@@ -23,6 +23,8 @@ const Container = styled('div')({
 const SubtitleWrapper = styled('div')({
   display: 'inline-flex',
   alignItems: 'center',
+  paddingLeft: '15px',
+  paddingRight: '15px',
   borderRadius: '40px',
   pointerEvents: 'all',
   fontFamily: 'sans-serif',
@@ -33,8 +35,8 @@ const SubtitleButton = styled('div')({
   display: 'inline-block',
   backgroundColor: 'transparent',
   fontWeight: 900,
-  marginLeft: '10px',
-  marginRight: '10px',
+  marginLeft: '0',
+  marginRight: '0',
   border: 'none',
   cursor: 'pointer',
   userSelect: 'none',
@@ -42,7 +44,7 @@ const SubtitleButton = styled('div')({
 
 const SubtitleText = styled('div')({
   display: 'inline-block',
-  margin: '7px 0 7px 0',
+  margin: '7px 10px 7px 10px',
   userSelect: 'none',
   textAlign: 'center',
 });
@@ -63,6 +65,7 @@ function Subtitles({ video, speedDisplay }) {
   const opacityRef = useRef(0.5);
   const [opacity, setOpacity] = useState(opacityRef.current);
   const [listening, setListening] = useState(false);
+  const [netflix] = useState(window.location.hostname === 'www.netflix.com');
 
   // Retrieve user specific settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
@@ -140,11 +143,13 @@ function Subtitles({ video, speedDisplay }) {
             }
             break;
           case 'opacity-plus':
-            opacityRef.current += 0.1;
-            setOpacity(opacityRef.current);
-            chrome.storage.sync.set({
-              opacity: opacityRef.current,
-            });
+            if (opacityRef.current < 1) {
+              opacityRef.current += 0.1;
+              setOpacity(opacityRef.current);
+              chrome.storage.sync.set({
+                opacity: opacityRef.current,
+              });
+            }
             break;
           default:
           // Do nothing
@@ -218,12 +223,14 @@ function Subtitles({ video, speedDisplay }) {
           onMouseEnter={pauseHandler}
           onMouseLeave={playHandler}
         >
-          <SubtitleButton
-            onClick={handlePrevButton}
-            id="movie-subtitles-prev-button"
-          >
-            «
-          </SubtitleButton>
+          {!netflix && (
+            <SubtitleButton
+              onClick={handlePrevButton}
+              id="movie-subtitles-prev-button"
+            >
+              «
+            </SubtitleButton>
+          )}
           <MusicWrapper>
             <SubtitleText
               dangerouslySetInnerHTML={{ __html: subs[pos].text }}
@@ -233,11 +240,15 @@ function Subtitles({ video, speedDisplay }) {
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => (video.currentTime = subs[pos].music.end)}
+                  onClick={() =>
+                    !netflix ? (video.currentTime = subs[pos].music.end) : null
+                  }
                   onMouseEnter={() => setMusicHover(true)}
                   onMouseLeave={() => setMusicHover(false)}
                 >
-                  {musicHover ? 'Skip the music!' : subs[pos].music.text}
+                  {musicHover && !netflix
+                    ? 'Skip the music!'
+                    : subs[pos].music.text}
                 </Button>
               </Grid>
             )}
@@ -249,12 +260,14 @@ function Subtitles({ video, speedDisplay }) {
               </Grid>
             )}
           </MusicWrapper>
-          <SubtitleButton
-            onClick={handleNextButton}
-            id="movie-subtitles-next-button"
-          >
-            »
-          </SubtitleButton>
+          {!netflix && (
+            <SubtitleButton
+              onClick={handleNextButton}
+              id="movie-subtitles-next-button"
+            >
+              »
+            </SubtitleButton>
+          )}
         </SubtitleWrapper>
       </Container>
     </Draggable>
