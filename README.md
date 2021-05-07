@@ -53,6 +53,7 @@ Movie Subtitles is an open-source project. If you have any ideas for improvement
 
 - Logo inspired by [icons8](https://icons8.com/icons/set/movie-theater)
 - The extension was built using [Ixieyang's](https://github.com/lxieyang/chrome-extension-boilerplate-react) React Boilerplate
+- Screenshots taken from [Big Buck Bunny](https://www.youtube.com/watch?v=aqz-KE-bpKQ)
 
 ## License
 
