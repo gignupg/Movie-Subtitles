@@ -15,7 +15,7 @@ To install it please follow [this link](link-to-chrome-webstore), then click `in
 
 Unfortunately, Movie Subtitles doesn't have a subtitle search.
 You have to download the subtitles online before you can use them in the extension.
-There are many websites that offer free subtitles. The most popular one is probably [Open Subtitles](https://opensubtitles.org). Another one is [Yify Subtitles](https://yts-subs.com).
+There are many websites that offer free subtitles. Two of the most popular ones are [Open Subtitles](https://opensubtitles.org) and [Yify Subtitles](https://yts-subs.com).
 Once you got the subtitles you're good to go!
 
 ![previous sentence](src/assets/screenshots/load-subtitles.png)
