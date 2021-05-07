@@ -1,6 +1,4 @@
-# Movie Subtitles
-
-![Movie Subtitles Icon](src/assets/img/movie-subtitles-48.png)
+# Movie Subtitles ![Movie Subtitles Icon](src/assets/img/movie-subtitles-48.png)
 
 Do you love to watch movies but hate when there are too many long scenes between dialogues? Movie Subtitles let's you know whenever there is a long scene without speech, so you can skip right to the next dialogue.
 
