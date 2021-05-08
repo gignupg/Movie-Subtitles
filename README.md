@@ -9,7 +9,7 @@ Do you love to watch movies but hate when there are too many long scenes between
 ## Installation
 
 Movie Subtitles is an open-source Chrome Extension and can be downloaded from the Chrome Web Store.  
-To install it please follow [this link](link-to-chrome-webstore), then click `install`.
+To install it please follow [this link](https://chrome.google.com/webstore/detail/movie-subtitles/ifimcneililngppkpddcliecbpcgdjag?hl=de), then click `install`.
 
 ## Adding Subtitles
 
