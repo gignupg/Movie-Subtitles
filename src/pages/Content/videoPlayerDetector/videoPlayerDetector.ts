@@ -10,7 +10,7 @@ export default function videoPlayerDetector(elementToDetect: any) {
 
     let site = window.location.hostname;
 
-    site = updateSite(site);
+    site = updateSite(site, element);
 
     const elem = elementPosition[site][element];
 
