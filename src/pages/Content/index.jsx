@@ -14,13 +14,17 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
       const container = videoPlayerDetector('container');
       const iconWrapper = videoPlayerDetector('iconWrapper');
 
-      if (container) {
+      if (video && container) {
         // Video detected
         sendResponse(true);
         // Render the subtitles and the menu
         render(<Content video={video} iconWrapper={iconWrapper} />, container);
         // Make sure only to inject the extension code once!
         displayingExtension = true;
+      } else {
+        console.log(
+          'Movie Subtitles Error: Unable to detect the video player on this site!'
+        );
       }
     } else if (displayingExtension) {
       // The video has already been detected and the subtitles are already being displayed
