@@ -45,7 +45,8 @@ const useStyles = makeStyles({
 
 export default function Shortcuts({ setDisplayShortcuts, thisSite }) {
   const classes = useStyles();
-  const [netflix] = useState(thisSite === 'www.netflix.com');
+  const netflix = thisSite === 'www.netflix.com';
+  const amazon = /amazon/.test(thisSite);
 
   useEffect(() => {
     // Reset the scroll
@@ -81,20 +82,24 @@ export default function Shortcuts({ setDisplayShortcuts, thisSite }) {
             <ShortcutItem>Fast-forward 2.5 seconds</ShortcutItem>
             <ShortcutItem>x</ShortcutItem>
           </ShortcutWrapper>
-          <Divider />
-          <ShortcutWrapper>
-            <ShortcutItem>Rewind 5 seconds</ShortcutItem>
-            <ShortcutItem
-              dangerouslySetInnerHTML={{ __html: '&#8678;' }}
-            ></ShortcutItem>
-          </ShortcutWrapper>
-          <Divider />
-          <ShortcutWrapper>
-            <ShortcutItem>Fast-forward 5 seconds</ShortcutItem>
-            <ShortcutItem
-              dangerouslySetInnerHTML={{ __html: '&#8680;' }}
-            ></ShortcutItem>
-          </ShortcutWrapper>
+          {!amazon && (
+            <>
+              <Divider />
+              <ShortcutWrapper>
+                <ShortcutItem>Rewind 5 seconds</ShortcutItem>
+                <ShortcutItem
+                  dangerouslySetInnerHTML={{ __html: '&#8678;' }}
+                ></ShortcutItem>
+              </ShortcutWrapper>
+              <Divider />
+              <ShortcutWrapper>
+                <ShortcutItem>Fast-forward 5 seconds</ShortcutItem>
+                <ShortcutItem
+                  dangerouslySetInnerHTML={{ __html: '&#8680;' }}
+                ></ShortcutItem>
+              </ShortcutWrapper>
+            </>
+          )}
         </>
       )}
       <Divider />

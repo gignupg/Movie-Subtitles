@@ -1,6 +1,6 @@
 {
   "name": "Movie Subtitles",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Add subtitles anywhere and skip long scenes between dialogues thanks to Movie Subtitle's silence indicator!",
   "manifest_version": 3,
   "background": { "service_worker": "background.bundle.js" },

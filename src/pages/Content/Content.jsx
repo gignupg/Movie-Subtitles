@@ -23,7 +23,7 @@ export default function Content({ video, iconWrapper }) {
   const speedRef = useRef(0);
   const [speedDisplay, setSpeedDisplay] = useState(false);
   const [menu, setMenu] = useState(false);
-  const [netflix] = useState(window.location.hostname === 'www.netflix.com');
+  const netflix = window.location.hostname === 'www.netflix.com';
 
   // Close the in-video popup menu when the real popup is opened
   chrome.runtime.onMessage.addListener((msg) => {
@@ -121,7 +121,11 @@ export default function Content({ video, iconWrapper }) {
     <>
       {menu && <BlurredBackground onClick={() => setMenu(false)} />}
       {displaySubtitles && (
-        <Subtitles video={video} speedDisplay={speedDisplay} />
+        <Subtitles
+          video={video}
+          speedDisplay={speedDisplay}
+          netflix={netflix}
+        />
       )}
       <PopupWrapper
         popup={false}

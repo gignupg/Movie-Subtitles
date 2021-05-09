@@ -54,7 +54,7 @@ const MusicWrapper = styled('div')({
   margin: 0,
 });
 
-function Subtitles({ video, speedDisplay }) {
+function Subtitles({ video, speedDisplay, netflix }) {
   const [forcedPause, setForcedPause] = useState(false);
   const subsRef = useRef([{ text: 'No subtitles loaded' }]);
   const [subs, setSubs] = useState(subsRef.current);
@@ -65,7 +65,8 @@ function Subtitles({ video, speedDisplay }) {
   const opacityRef = useRef(0.5);
   const [opacity, setOpacity] = useState(opacityRef.current);
   const [listening, setListening] = useState(false);
-  const [netflix] = useState(window.location.hostname === 'www.netflix.com');
+  const [upload, setUpload] = useState(false);
+  const [amazon] = useState(/amazon/.test(window.location.hostname));
 
   // Retrieve user specific settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
@@ -81,6 +82,12 @@ function Subtitles({ video, speedDisplay }) {
 
   useEffect(() => {
     prepareTimeUpdate();
+
+    if (amazon && upload) {
+      setUpload(false);
+      const data = { syncValue: 10, syncLater: true };
+      synchronize(data, subsRef, setSubs);
+    }
     // eslint-disable-next-line
   }, [subs]);
 
@@ -99,6 +106,7 @@ function Subtitles({ video, speedDisplay }) {
 
             reader.onload = function (evt) {
               const content = evt.target.result;
+              setUpload(true);
               processSubtitles(content.split('\n'), subsRef, setSubs);
             };
             reader.readAsText(file, fileInfo.encoding);
@@ -163,7 +171,6 @@ function Subtitles({ video, speedDisplay }) {
       'syncNow',
       function (e) {
         const data = e.detail;
-
         if (data.syncValue && subsRef.current.length > 1) {
           synchronize(data, subsRef, setSubs);
         }

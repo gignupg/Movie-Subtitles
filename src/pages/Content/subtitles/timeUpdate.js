@@ -1,6 +1,6 @@
 export default function timeUpdate(subs, video, pos, setPos) {
   if (subs && subs.length > 1) {
-    const time = video.currentTime.toFixed(3);
+    const time = Number(video.currentTime.toFixed(3));
     // See if it's the next or previous position.
     if (
       subs[pos] &&

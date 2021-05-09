@@ -14,9 +14,11 @@ const Wrapper = styled('div')({
 });
 
 const PopupWrapper = ({ popup, display, setMenu }) => {
+  const thisSite = window.location.hostname;
+
   return (
     <Wrapper id="movie-subtitles-scroll-anchor" style={{ display: display }}>
-      <Popup setMenu={setMenu} popup={popup} />
+      <Popup setMenu={setMenu} popup={popup} thisSite={thisSite} />
     </Wrapper>
   );
 };
