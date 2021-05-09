@@ -66,7 +66,10 @@ function Subtitles({ video, speedDisplay, netflix }) {
   const [opacity, setOpacity] = useState(opacityRef.current);
   const [listening, setListening] = useState(false);
   const [upload, setUpload] = useState(false);
-  const [amazon] = useState(/amazon/.test(window.location.hostname));
+  // We want to know whether it's amazon or atv amazon.
+  // Atv amazon is using the atv web player sdk and works differently than amazon.
+  // On amazon we got to make sure to display the subtitles 10 seconds later.
+  const [amazon] = Boolean(document.querySelector('.hideableTopButtons'));
 
   // Retrieve user specific settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
