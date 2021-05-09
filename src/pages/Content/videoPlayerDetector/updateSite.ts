@@ -6,7 +6,12 @@ export default function updateSite(site: string) {
 
   // Take care of special cases
   if (/www\.amazon/.test(site) || /smile\.amazon/.test(site)) {
-    modifiedSite = s.amazon;
+    if (document.querySelector('.hideableTopButtons')) {
+      modifiedSite = s.amazon;
+    } else {
+      modifiedSite = s.amazonATV;
+    }
+
   } else {
     modifiedSite = site;
   }

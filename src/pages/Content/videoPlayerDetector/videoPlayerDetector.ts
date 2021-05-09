@@ -20,11 +20,7 @@ export default function videoPlayerDetector(elementToDetect: any) {
     const index = elem.index;
 
     if (element === 'video') {
-      let video = document.querySelectorAll(selector)[index] as HTMLElement;
-
-      if (!video) {
-        video = document.querySelectorAll(selector)[0] as HTMLElement;
-      }
+      const video = document.querySelectorAll(selector)[index] as HTMLElement;
 
       if (!video) return null;
 

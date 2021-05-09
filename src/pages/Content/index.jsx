@@ -25,6 +25,8 @@ chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
         console.log(
           'Movie Subtitles Error: Unable to detect the video player on this site!'
         );
+        console.log('video', video);
+        console.log('container:', container);
       }
     } else if (displayingExtension) {
       // The video has already been detected and the subtitles are already being displayed
