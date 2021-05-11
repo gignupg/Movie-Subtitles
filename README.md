@@ -45,6 +45,9 @@ Want to use convenient shortcuts? There's a variety of shortcuts you can use.
 - Over 40 supported languages (upload subtitles in almost any language you want)
 - Skip Music (for this to work, choose subtitle files that indicate music with ♪ or [Music])
 
+## Skipping Violent Scenes and Adult Content
+I wrote an article on Medium regarding this. Check it out [here](https://gignu.medium.com/how-to-skip-violent-scenes-and-adult-content-in-movies-3c7d89b813ad)!
+
 ## Contributing
 
 Movie Subtitles is an open-source project. If you have any ideas for improvement, found a bug, or want to contribute in some other way, you're welcome to do so!
