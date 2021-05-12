@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { styled } from '@material-ui/core/styles';
+import { styled, makeStyles } from '@material-ui/core/styles';
 import Draggable from 'react-draggable';
 import languageEncoding from 'detect-file-encoding-and-language';
 import processSubtitles from './processSubtitles';
@@ -7,6 +7,12 @@ import timeUpdate from './timeUpdate';
 import synchronize from './synchronize';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
+
+const useStyles = makeStyles(() => ({
+  root: {
+    fontSize: (props) => props.fontSize,
+  },
+}));
 
 const Container = styled('div')({
   position: 'absolute',
@@ -72,6 +78,11 @@ function Subtitles({ video, speedDisplay, netflix }) {
   const [amazon] = useState(
     Boolean(document.querySelector('.hideableTopButtons'))
   );
+
+  // By using classes (useStyles) we can overwrite global css rules.
+  // In this case the Chrome Extension 'TubeBuddy' was overwriting the fontSize...
+  const props = { fontSize: fontSize };
+  const classes = useStyles(props);
 
   // Retrieve user specific settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
@@ -229,7 +240,6 @@ function Subtitles({ video, speedDisplay, netflix }) {
       <Container>
         <SubtitleWrapper
           style={{
-            fontSize: fontSize + 'px',
             backgroundColor: `rgba(0,0,0,${opacity})`,
           }}
           onMouseEnter={pauseHandler}
@@ -239,6 +249,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
             <SubtitleButton
               onClick={handlePrevButton}
               id="movie-subtitles-prev-button"
+              className={classes.root}
             >
               «
             </SubtitleButton>
@@ -246,6 +257,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
           <MusicWrapper>
             <SubtitleText
               dangerouslySetInnerHTML={{ __html: subs[pos].text }}
+              className={classes.root}
             ></SubtitleText>
             {subs[pos].music && (
               <Grid container justify="center" style={{ marginBottom: '7px' }}>
@@ -276,6 +288,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
             <SubtitleButton
               onClick={handleNextButton}
               id="movie-subtitles-next-button"
+              className={classes.root}
             >
               »
             </SubtitleButton>
