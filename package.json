@@ -1,7 +1,7 @@
 {
   "name": "movie-subtitles",
-  "version": "1.4.1",
-  "description": "Add subtitles anywhere and skip long scenes between dialogues thanks to Movie Subtitle's silence indicator!",
+  "version": "1.4.2",
+  "description": "Add your own subtitles anywhere and skip unpleasant scenes between dialogues thanks to Movie Subtitle's silence indicator!",
   "license": "MIT",
   "repository": {
     "type": "git",
