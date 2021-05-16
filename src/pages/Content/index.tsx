@@ -1,5 +1,6 @@
 import React from 'react';
 import { render } from 'react-dom';
+// @ts-ignore
 import Content from './Content';
 import videoPlayerDetector from './videoPlayerDetector/videoPlayerDetector';
 
