@@ -66,6 +66,11 @@ function Subtitles({ video, speedDisplay, netflix }) {
   const [subs, setSubs] = useState(subsRef.current);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
+  const silenceIndicatorRef = useRef(true);
+  const [silenceIndicator, setSilenceIndicator] = useState(
+    silenceIndicatorRef.current
+  );
+  const [displaySubtitles, setDisplaySubtitles] = useState(true);
   const fontRef = useRef(24);
   const [fontSize, setFontSize] = useState(fontRef.current);
   const opacityRef = useRef(0.5);
@@ -94,7 +99,19 @@ function Subtitles({ video, speedDisplay, netflix }) {
       opacityRef.current = storage.opacity;
       setOpacity(storage.opacity);
     }
+    if (storage.silence !== undefined && silenceIndicator !== storage.silence) {
+      silenceIndicatorRef.current = storage.silence;
+      setSilenceIndicator(storage.silence);
+    }
   });
+
+  useEffect(() => {
+    if (/Silence \(.*\)/.test(subs[pos].text)) {
+      silenceIndicator ? setDisplaySubtitles(true) : setDisplaySubtitles(false);
+    } else {
+      setDisplaySubtitles(true);
+    }
+  }, [pos, silenceIndicator, subs]);
 
   useEffect(() => {
     prepareTimeUpdate();
@@ -110,6 +127,16 @@ function Subtitles({ video, speedDisplay, netflix }) {
   if (!listening) {
     // Make sure only to set up one listener!
     setListening(true);
+
+    // Updating the silence indicator whenever it is changed
+    chrome.storage.onChanged.addListener(function (changes) {
+      for (let [key, { _, newValue }] of Object.entries(changes)) {
+        if (key === 'silence') {
+          silenceIndicatorRef.current = newValue;
+          setSilenceIndicator(newValue);
+        }
+      }
+    });
 
     // Listen for fileUploads
     document.addEventListener(
@@ -238,62 +265,74 @@ function Subtitles({ video, speedDisplay, netflix }) {
   return (
     <Draggable axis="y">
       <Container>
-        <SubtitleWrapper
-          style={{
-            backgroundColor: `rgba(0,0,0,${opacity})`,
-          }}
-          onMouseEnter={pauseHandler}
-          onMouseLeave={playHandler}
-        >
-          {!netflix && (
-            <SubtitleButton
-              onClick={handlePrevButton}
-              id="movie-subtitles-prev-button"
-              className={classes.root}
-            >
-              «
-            </SubtitleButton>
-          )}
-          <MusicWrapper>
-            <SubtitleText
-              dangerouslySetInnerHTML={{ __html: subs[pos].text }}
-              className={classes.root}
-            ></SubtitleText>
-            {subs[pos].music && (
-              <Grid container justify="center" style={{ marginBottom: '7px' }}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    !netflix ? (video.currentTime = subs[pos].music.end) : null
-                  }
-                  onMouseEnter={() => setMusicHover(true)}
-                  onMouseLeave={() => setMusicHover(false)}
+        {displaySubtitles && (
+          <SubtitleWrapper
+            style={{
+              backgroundColor: `rgba(0,0,0,${opacity})`,
+            }}
+            onMouseEnter={pauseHandler}
+            onMouseLeave={playHandler}
+          >
+            {!netflix && (
+              <SubtitleButton
+                onClick={handlePrevButton}
+                id="movie-subtitles-prev-button"
+                className={classes.root}
+              >
+                «
+              </SubtitleButton>
+            )}
+            <MusicWrapper>
+              <SubtitleText
+                dangerouslySetInnerHTML={{ __html: subs[pos].text }}
+                className={classes.root}
+              ></SubtitleText>
+              {subs[pos].music && (
+                <Grid
+                  container
+                  justify="center"
+                  style={{ marginBottom: '7px' }}
                 >
-                  {musicHover && !netflix
-                    ? 'Skip the music!'
-                    : subs[pos].music.text}
-                </Button>
-              </Grid>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() =>
+                      !netflix
+                        ? (video.currentTime = subs[pos].music.end)
+                        : null
+                    }
+                    onMouseEnter={() => setMusicHover(true)}
+                    onMouseLeave={() => setMusicHover(false)}
+                  >
+                    {musicHover && !netflix
+                      ? 'Skip the music!'
+                      : subs[pos].music.text}
+                  </Button>
+                </Grid>
+              )}
+              {speedDisplay && (
+                <Grid
+                  container
+                  justify="center"
+                  style={{ marginBottom: '7px' }}
+                >
+                  <Button variant="contained" color="secondary">
+                    {speedDisplay}
+                  </Button>
+                </Grid>
+              )}
+            </MusicWrapper>
+            {!netflix && (
+              <SubtitleButton
+                onClick={handleNextButton}
+                id="movie-subtitles-next-button"
+                className={classes.root}
+              >
+                »
+              </SubtitleButton>
             )}
-            {speedDisplay && (
-              <Grid container justify="center" style={{ marginBottom: '7px' }}>
-                <Button variant="contained" color="secondary">
-                  {speedDisplay}
-                </Button>
-              </Grid>
-            )}
-          </MusicWrapper>
-          {!netflix && (
-            <SubtitleButton
-              onClick={handleNextButton}
-              id="movie-subtitles-next-button"
-              className={classes.root}
-            >
-              »
-            </SubtitleButton>
-          )}
-        </SubtitleWrapper>
+          </SubtitleWrapper>
+        )}
       </Container>
     </Draggable>
   );
