@@ -9,7 +9,7 @@ const InvisibleInput = styled('input')({
   display: 'none',
 });
 
-const LoadSubtitles = ({ popup, setMenu }) => {
+const Upload = ({ popup, setMenu }) => {
   const [listening, setListening] = useState(false);
 
   function invisibleUploadHandler(e) {
@@ -61,4 +61,4 @@ const LoadSubtitles = ({ popup, setMenu }) => {
   );
 };
 
-export default LoadSubtitles;
+export default Upload;

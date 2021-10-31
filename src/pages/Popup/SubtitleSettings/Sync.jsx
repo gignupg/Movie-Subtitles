@@ -19,7 +19,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Synchronization = ({ popup }) => {
+const Sync = ({ popup }) => {
   const classes = useStyles();
   const [direction, setDirection] = useState(false);
   const [syncValue, setSyncValue] = useState(0);
@@ -148,4 +148,4 @@ const Synchronization = ({ popup }) => {
   );
 };
 
-export default Synchronization;
+export default Sync;

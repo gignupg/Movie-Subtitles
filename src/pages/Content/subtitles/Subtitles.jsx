@@ -51,7 +51,6 @@ const SubtitleButton = styled('div')({
 const SubtitleText = styled('div')({
   display: 'inline-block',
   margin: '7px 10px 7px 10px',
-  userSelect: 'none',
   textAlign: 'center',
 });
 
@@ -60,16 +59,14 @@ const MusicWrapper = styled('div')({
   margin: 0,
 });
 
-function Subtitles({ video, speedDisplay, netflix }) {
+function Subtitles({ video, speedDisplay, netflix, editRef }) {
   const [forcedPause, setForcedPause] = useState(false);
   const subsRef = useRef([{ text: 'No subtitles loaded' }]);
   const [subs, setSubs] = useState(subsRef.current);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
-  const silenceIndicatorRef = useRef(true);
-  const [silenceIndicator, setSilenceIndicator] = useState(
-    silenceIndicatorRef.current
-  );
+  const [silenceIndicator, setSilenceIndicator] = useState(true);
+  const [editMode, setEditMode] = useState(false);
   const [displaySubtitles, setDisplaySubtitles] = useState(true);
   const fontRef = useRef(24);
   const [fontSize, setFontSize] = useState(fontRef.current);
@@ -89,7 +86,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
   const props = { fontSize: fontSize };
   const classes = useStyles(props);
 
-  // Retrieve user specific settings from chrome storage
+  // Retrieving user specific settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
     if (storage.fontSize !== undefined) {
       fontRef.current = storage.fontSize;
@@ -100,14 +97,17 @@ function Subtitles({ video, speedDisplay, netflix }) {
       setOpacity(storage.opacity);
     }
     if (storage.silence !== undefined && silenceIndicator !== storage.silence) {
-      silenceIndicatorRef.current = storage.silence;
       setSilenceIndicator(storage.silence);
+    }
+    if (storage.editMode !== undefined && editMode !== storage.editMode) {
+      editRef.current = storage.editMode;
+      setEditMode(storage.editMode);
     }
   });
 
   useEffect(() => {
-    if (/Silence \(.*\)/.test(subs[pos].text)) {
-      silenceIndicator ? setDisplaySubtitles(true) : setDisplaySubtitles(false);
+    if (!silenceIndicator && /Silence \(.*\)/.test(subs[pos].text)) {
+      setDisplaySubtitles(false);
     } else {
       setDisplaySubtitles(true);
     }
@@ -132,8 +132,10 @@ function Subtitles({ video, speedDisplay, netflix }) {
     chrome.storage.onChanged.addListener(function (changes) {
       for (let [key, { _, newValue }] of Object.entries(changes)) {
         if (key === 'silence') {
-          silenceIndicatorRef.current = newValue;
           setSilenceIndicator(newValue);
+        } else if (key === 'editMode') {
+          editRef.current = newValue;
+          setEditMode(newValue);
         }
       }
     });
@@ -155,7 +157,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
             reader.readAsText(file, fileInfo.encoding);
           })
           .catch((err) => {
-            console.log('Error caught:', err);
+            console.warn('Error caught:', err);
           });
       },
       false
@@ -263,7 +265,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
   };
 
   return (
-    <Draggable axis="y">
+    <Draggable axis="y" disabled={editMode}>
       <Container>
         {displaySubtitles && (
           <SubtitleWrapper
@@ -286,6 +288,7 @@ function Subtitles({ video, speedDisplay, netflix }) {
               <SubtitleText
                 dangerouslySetInnerHTML={{ __html: subs[pos].text }}
                 className={classes.root}
+                style={{userSelect: editMode ? 'text' : 'none'}}
               ></SubtitleText>
               {subs[pos].music && (
                 <Grid

@@ -8,19 +8,9 @@ import AddCircleIcon from '@material-ui/icons/AddCircle';
 import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import MenuHeading from '../MenuHeading';
 import Box from '@material-ui/core/Box';
-import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
-const DisplaySettings = ({ popup }) => {
+const Display = ({ popup }) => {
   const [listening, setListening] = useState(false);
-  const [silenceIndicator, setSilenceIndicator] = useState(true);
-
-  // Retrieve the silence settings from chrome storage and updating the silenceIndicator
-  chrome.storage.sync.get(null, function (storage) {
-    if (storage.silence !== undefined && silenceIndicator !== storage.silence) {
-      setSilenceIndicator(storage.silence);
-    }
-  });
 
   function displaySettingsHandler(action) {
     if (popup) {
@@ -35,14 +25,6 @@ const DisplaySettings = ({ popup }) => {
       });
       document.dispatchEvent(displaySettings);
     }
-  }
-
-  function silenceSwitchHandler(e) {
-    e.preventDefault();
-    setSilenceIndicator(!silenceIndicator);
-    chrome.storage.sync.set({
-      silence: !silenceIndicator,
-    });
   }
 
   if (!listening) {
@@ -62,18 +44,6 @@ const DisplaySettings = ({ popup }) => {
       <MenuHeading heading="Display:" />
       <Box mb={1}>
         <List component="nav" aria-label="main mailbox folders">
-          <ListItem button>
-            <ListItemText
-              style={{ color: 'black' }}
-              primary="Silence Indicator"
-            />
-            <ListItemSecondaryAction>
-              <FormControlLabel
-                control={<Switch checked={silenceIndicator} />}
-                onClick={silenceSwitchHandler}
-              />
-            </ListItemSecondaryAction>
-          </ListItem>
           <ListItem button>
             <ListItemText style={{ color: 'black' }} primary="Font Size" />
             <ListItemSecondaryAction>
@@ -118,4 +88,4 @@ const DisplaySettings = ({ popup }) => {
   );
 };
 
-export default DisplaySettings;
+export default Display;

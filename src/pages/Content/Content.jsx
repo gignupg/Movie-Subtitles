@@ -24,6 +24,7 @@ export default function Content({ video, iconWrapper }) {
   const [speedDisplay, setSpeedDisplay] = useState(false);
   const [menu, setMenu] = useState(false);
   const netflix = window.location.hostname === 'www.netflix.com';
+  const editRef = useRef(false);
 
   // Close the in-video popup menu when the real popup is opened
   chrome.runtime.onMessage.addListener((msg) => {
@@ -53,9 +54,14 @@ export default function Content({ video, iconWrapper }) {
         const key = event.key.toLowerCase();
 
         if (key === 'c') {
-          // Toggle Subtitles
-          displaySubtitleRef.current = !displaySubtitleRef.current;
-          setDisplaySubtitles(displaySubtitleRef.current);
+          if (editRef.current) {
+            // The execCommand is deprecated though the copy functionality is still supported by all major web browsers!
+            document.execCommand('copy');
+          } else {
+            // Making sure only to toggle subtitles when not in editMode. In edit mode we copy the subtitles instead of toggling them.
+            displaySubtitleRef.current = !displaySubtitleRef.current;
+            setDisplaySubtitles(displaySubtitleRef.current);
+          }
           event.preventDefault();
           event.stopPropagation();
         } else if (key === 'z' && !netflix) {
@@ -125,6 +131,7 @@ export default function Content({ video, iconWrapper }) {
           video={video}
           speedDisplay={speedDisplay}
           netflix={netflix}
+          editRef={editRef}
         />
       )}
       <PopupWrapper

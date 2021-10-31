@@ -1,14 +1,16 @@
 import React from 'react';
-import LoadSubtitles from './LoadSubtitles';
-import DisplaySettings from './DisplaySettings';
-import Synchronization from './Synchronization';
+import Upload from './Upload';
+import Display from './Display';
+import Sync from './Sync';
+import Advanced from './Advanced';
 
 const SubtitleSettings = ({ popup, setMenu }) => {
   return (
     <>
-      <LoadSubtitles popup={popup} setMenu={setMenu} />
-      <DisplaySettings popup={popup} />
-      <Synchronization popup={popup} />
+      <Upload popup={popup} setMenu={setMenu} />
+      <Display popup={popup} />
+      <Sync popup={popup} />
+      <Advanced />
     </>
   );
 };
