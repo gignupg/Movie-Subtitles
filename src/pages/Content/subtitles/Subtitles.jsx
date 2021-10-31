@@ -68,6 +68,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
   const [silenceIndicator, setSilenceIndicator] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [displaySubtitles, setDisplaySubtitles] = useState(true);
+  const [syncMessage, setSyncMessage] = useState(false);
   const fontRef = useRef(24);
   const [fontSize, setFontSize] = useState(fontRef.current);
   const opacityRef = useRef(0.5);
@@ -218,6 +219,14 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
         const data = e.detail;
         if (data.syncValue && subsRef.current.length > 1) {
           synchronize(data, subsRef, setSubs);
+
+          // Displaying success message for 2 seconds
+          setSyncMessage(true)
+
+          const syncInterval = setInterval(() => {
+            setSyncMessage(false);
+            clearInterval(syncInterval);
+          }, 2000)
         }
       },
       false
@@ -286,9 +295,12 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
             )}
             <MusicWrapper>
               <SubtitleText
-                dangerouslySetInnerHTML={{ __html: subs[pos].text }}
+                dangerouslySetInnerHTML={{ __html: syncMessage ? 'Syncing...' : subs[pos].text }}
                 className={classes.root}
-                style={{userSelect: editMode ? 'text' : 'none'}}
+                style={{
+                  userSelect: editMode ? 'text' : 'none',
+                  color: syncMessage ? 'lime' : 'white',
+                }}
               ></SubtitleText>
               {subs[pos].music && (
                 <Grid
