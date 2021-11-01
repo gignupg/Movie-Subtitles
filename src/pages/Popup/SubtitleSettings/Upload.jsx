@@ -21,8 +21,7 @@ const Upload = ({ popup, setMenu }) => {
 
   function uploadButtonHandler() {
     if (popup) {
-      // Upload button clicked
-      // Sending a message to the content script, then opening the file upload window from there
+      // Sending message to the content script, then opening the file upload window from there
       chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
         chrome.tabs.sendMessage(tab[0].id, { fileUpload: true });
       });

@@ -8,6 +8,23 @@ import synchronize from './synchronize';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 
+const subtitles = {
+  color: {
+    default: 'white',
+    error: 'red',
+    success: 'lime',
+  },
+  text: {
+    default: 'No subtitles loaded',
+    error: {
+      format: 'Wrong format! Please, use .srt, .sub, or .txt subtitles!',
+      damagedFile: 'Damaged subtitle file! Please, try another one!'
+    },
+    success: 'Synchronisation successful!',
+  },
+  types: ['application/x-subrip', 'text/plain', 'text/x-microdvd'],   // .srt, .txt, .sub
+}
+
 const useStyles = makeStyles(() => ({
   root: {
     fontSize: (props) => props.fontSize,
@@ -34,7 +51,7 @@ const SubtitleWrapper = styled('div')({
   borderRadius: '40px',
   pointerEvents: 'all',
   fontFamily: 'sans-serif',
-  color: 'white',
+  color: subtitles.color.default,
 });
 
 const SubtitleButton = styled('div')({
@@ -61,14 +78,15 @@ const MusicWrapper = styled('div')({
 
 function Subtitles({ video, speedDisplay, netflix, editRef }) {
   const [forcedPause, setForcedPause] = useState(false);
-  const subsRef = useRef([{ text: 'No subtitles loaded' }]);
+  const subsRef = useRef([{ text: subtitles.text.default }]);
   const [subs, setSubs] = useState(subsRef.current);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
   const [silenceIndicator, setSilenceIndicator] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [displaySubtitles, setDisplaySubtitles] = useState(true);
-  const [syncMessage, setSyncMessage] = useState(false);
+  const [infoDialog, setInfoDialog] = useState('');
+  const [subtitleColor, setSubtitleColor] = useState(subtitles.color.default);
   const fontRef = useRef(24);
   const [fontSize, setFontSize] = useState(fontRef.current);
   const opacityRef = useRef(0.5);
@@ -146,20 +164,46 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
       'fileUpload',
       function (e) {
         const file = e.detail;
-        languageEncoding(file)
+
+        // Resetting any previously loaded subtitles
+        subsRef.current = [{ text: subtitles.text.default }];
+        setSubs(subsRef.current);
+
+        if (subtitles.types.includes(file.type)) {
+          // Making sure it's either .srt, .txt, or .sub
+          languageEncoding(file)
           .then((fileInfo) => {
             const reader = new FileReader();
 
             reader.onload = function (evt) {
               const content = evt.target.result;
               setUpload(true);
-              processSubtitles(content.split('\n'), subsRef, setSubs);
+              
+              try {
+                processSubtitles(content.split('\n'), subsRef, setSubs);
+                setInfoDialog('');
+                setSubtitleColor(subtitles.color.default);
+
+              } catch(err) {
+                console.log('Catch in processSubtitles()!', err);
+                setInfoDialog(subtitles.text.error.damagedFile);
+                setSubtitleColor(subtitles.color.error);
+              }
             };
+
             reader.readAsText(file, fileInfo.encoding);
+
           })
           .catch((err) => {
             console.warn('Error caught:', err);
           });
+
+        } else {
+          // Displaying error message (wrong format)
+          setInfoDialog(subtitles.text.error.format)
+          setSubtitleColor(subtitles.color.error);
+        }
+
       },
       false
     );
@@ -221,10 +265,12 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
           synchronize(data, subsRef, setSubs);
 
           // Displaying success message for 2 seconds
-          setSyncMessage(true)
+          setInfoDialog(subtitles.text.success)
+          setSubtitleColor(subtitles.color.success);
 
           const syncInterval = setInterval(() => {
-            setSyncMessage(false);
+            setInfoDialog('');
+            setSubtitleColor(subtitles.color.default);
             clearInterval(syncInterval);
           }, 2000)
         }
@@ -284,7 +330,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
             onMouseEnter={pauseHandler}
             onMouseLeave={playHandler}
           >
-            {!netflix && (
+            {(!netflix && !infoDialog) && (
               <SubtitleButton
                 onClick={handlePrevButton}
                 id="movie-subtitles-prev-button"
@@ -295,11 +341,11 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
             )}
             <MusicWrapper>
               <SubtitleText
-                dangerouslySetInnerHTML={{ __html: syncMessage ? 'Syncing...' : subs[pos].text }}
+                dangerouslySetInnerHTML={{ __html: infoDialog ? infoDialog : subs[pos].text }}
                 className={classes.root}
                 style={{
                   userSelect: editMode ? 'text' : 'none',
-                  color: syncMessage ? 'lime' : 'white',
+                  color: subtitleColor,
                 }}
               ></SubtitleText>
               {subs[pos].music && (
@@ -337,7 +383,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
                 </Grid>
               )}
             </MusicWrapper>
-            {!netflix && (
+            {(!netflix && !infoDialog) && (
               <SubtitleButton
                 onClick={handleNextButton}
                 id="movie-subtitles-next-button"

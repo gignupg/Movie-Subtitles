@@ -70,14 +70,17 @@ export default function processSubtitles(content, subsRef, setSubs) {
       if (type === 'time') {
         if (count >= newSubs.length) break;
 
-        type = 'text';
         const split = line.split(/ --> /);
+        if (split.length !== 2) continue;
+
+        type = 'text';
         const start = timeInSeconds(split[0]);
         const end = timeInSeconds(split[1]);
 
         // Updating the object
         newSubs[count].start = Number(start);
         newSubs[count].end = Number(end);
+
       } else if (type === 'text') {
         // If the next line is empty, set the type for the next i to null!
         if (i + 1 < content.length) {
