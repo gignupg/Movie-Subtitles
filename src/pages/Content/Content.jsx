@@ -51,71 +51,77 @@ export default function Content({ video, iconWrapper }) {
     document.addEventListener(
       'keydown',
       function (event) {
-        const key = event.key.toLowerCase();
+        const focusedElement = event.target.nodeName;
+        const elementId = event.target.id;
 
-        if (key === 'c') {
-          if (editRef.current) {
-            // The execCommand is deprecated though the copy functionality is still supported by all major web browsers!
-            document.execCommand('copy');
-          } else {
-            // Making sure only to toggle subtitles when not in editMode. In edit mode we copy the subtitles instead of toggling them.
-            displaySubtitleRef.current = !displaySubtitleRef.current;
-            setDisplaySubtitles(displaySubtitleRef.current);
+        if (focusedElement !== 'INPUT' && elementId !== 'contenteditable-root') {
+          // Disabling shortcuts when user is typing in search box or writing comments on YouTube
+          const key = event.key.toLowerCase();
+
+          if (key === 'c') {
+            if (editRef.current) {
+              // The execCommand is deprecated though the copy functionality is still supported by all major web browsers!
+              document.execCommand('copy');
+            } else {
+              // Making sure only to toggle subtitles when not in editMode. In edit mode we copy the subtitles instead of toggling them.
+              displaySubtitleRef.current = !displaySubtitleRef.current;
+              setDisplaySubtitles(displaySubtitleRef.current);
+            }
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'z' && !netflix) {
+            // Rewind 2.5 Seconds
+            video.currentTime = video.currentTime - 2.5;
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'x' && !netflix) {
+            // Fast-Forward 2.5 Seconds
+            video.currentTime = video.currentTime + 2.5;
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'ArrowLeft' && !netflix) {
+            // Rewind 5 Seconds
+            video.currentTime = video.currentTime - 5;
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'ArrowRight' && !netflix) {
+            // Fast-Forward 5 Seconds
+            video.currentTime = video.currentTime + 5;
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'a' && !netflix) {
+            // Previous Sentence
+            document.getElementById('movie-subtitles-prev-button').click();
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 's' && !netflix) {
+            // Next Sentence
+            document.getElementById('movie-subtitles-next-button').click();
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'q') {
+            // Decrease Playback Speed
+            video.playbackRate = Number((video.playbackRate - 0.1).toFixed(1));
+            setSpeedDisplay(video.playbackRate);
+            speedRef.current++;
+            setTimeout(() => {
+              speedRef.current--;
+              if (!speedRef.current) setSpeedDisplay(false);
+            }, 2000);
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'w') {
+            // Increase Playback Speed
+            video.playbackRate = Number((video.playbackRate + 0.1).toFixed(1));
+            setSpeedDisplay(video.playbackRate);
+            speedRef.current++;
+            setTimeout(() => {
+              speedRef.current--;
+              if (!speedRef.current) setSpeedDisplay(false);
+            }, 2000);
+            event.preventDefault();
+            event.stopPropagation();
           }
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'z' && !netflix) {
-          // Rewind 2.5 Seconds
-          video.currentTime = video.currentTime - 2.5;
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'x' && !netflix) {
-          // Fast-Forward 2.5 Seconds
-          video.currentTime = video.currentTime + 2.5;
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'ArrowLeft' && !netflix) {
-          // Rewind 5 Seconds
-          video.currentTime = video.currentTime - 5;
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'ArrowRight' && !netflix) {
-          // Fast-Forward 5 Seconds
-          video.currentTime = video.currentTime + 5;
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'a' && !netflix) {
-          // Previous Sentence
-          document.getElementById('movie-subtitles-prev-button').click();
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 's' && !netflix) {
-          // Next Sentence
-          document.getElementById('movie-subtitles-next-button').click();
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'q') {
-          // Decrease Playback Speed
-          video.playbackRate = Number((video.playbackRate - 0.1).toFixed(1));
-          setSpeedDisplay(video.playbackRate);
-          speedRef.current++;
-          setTimeout(() => {
-            speedRef.current--;
-            if (!speedRef.current) setSpeedDisplay(false);
-          }, 2000);
-          event.preventDefault();
-          event.stopPropagation();
-        } else if (key === 'w') {
-          // Increase Playback Speed
-          video.playbackRate = Number((video.playbackRate + 0.1).toFixed(1));
-          setSpeedDisplay(video.playbackRate);
-          speedRef.current++;
-          setTimeout(() => {
-            speedRef.current--;
-            if (!speedRef.current) setSpeedDisplay(false);
-          }, 2000);
-          event.preventDefault();
-          event.stopPropagation();
         }
       },
       true
