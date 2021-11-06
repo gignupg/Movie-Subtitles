@@ -101,7 +101,7 @@ export default function Content({ video, iconWrapper }) {
             event.stopPropagation();
           } else if (key === 'q') {
             // Decrease Playback Speed
-            video.playbackRate = Number((video.playbackRate - 0.1).toFixed(1));
+            video.playbackRate = Number((video.playbackRate - 0.25).toFixed(2));
             setSpeedDisplay(video.playbackRate);
             speedRef.current++;
             setTimeout(() => {
@@ -112,7 +112,7 @@ export default function Content({ video, iconWrapper }) {
             event.stopPropagation();
           } else if (key === 'w') {
             // Increase Playback Speed
-            video.playbackRate = Number((video.playbackRate + 0.1).toFixed(1));
+            video.playbackRate = Number((video.playbackRate + 0.25).toFixed(2));
             setSpeedDisplay(video.playbackRate);
             speedRef.current++;
             setTimeout(() => {
