@@ -71,8 +71,9 @@ const SubtitleText = styled('div')({
   textAlign: 'center',
 });
 
-const MusicWrapper = styled('div')({
-  display: 'block',
+const SubtitleArea = styled('div')({
+  display: 'flex',
+  flexDirection: 'column',
   margin: 0,
 });
 
@@ -339,7 +340,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
                 «
               </SubtitleButton>
             )}
-            <MusicWrapper>
+            <SubtitleArea>
               <SubtitleText
                 dangerouslySetInnerHTML={{ __html: infoDialog ? infoDialog : subs[pos].text }}
                 className={classes.root}
@@ -382,7 +383,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
                   </Button>
                 </Grid>
               )}
-            </MusicWrapper>
+            </SubtitleArea>
             {(!netflix && !infoDialog) && (
               <SubtitleButton
                 onClick={handleNextButton}
