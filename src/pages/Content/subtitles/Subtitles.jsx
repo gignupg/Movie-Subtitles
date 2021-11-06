@@ -167,6 +167,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
         const file = e.detail;
 
         // Resetting any previously loaded subtitles
+        setPos(0);
         subsRef.current = [{ text: subtitles.text.default }];
         setSubs(subsRef.current);
 
