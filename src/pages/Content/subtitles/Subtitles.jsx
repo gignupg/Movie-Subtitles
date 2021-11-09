@@ -165,13 +165,15 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
       'fileUpload',
       function (e) {
         const file = e.detail;
+        const extRegEx = new RegExp('^.*\.(srt|sub|txt)$', 'i');
+        const validExt = extRegEx.test(file.name);
 
         // Resetting any previously loaded subtitles
         setPos(0);
         subsRef.current = [{ text: subtitles.text.default }];
         setSubs(subsRef.current);
 
-        if (subtitles.types.includes(file.type)) {
+        if (subtitles.types.includes(file.type) || validExt) {
           // Making sure it's either .srt, .txt, or .sub
           languageEncoding(file)
           .then((fileInfo) => {
