@@ -44,6 +44,7 @@ Want to use convenient shortcuts? There's a variety of shortcuts you can use.
 - Style (adjust the subtitle size, background, and position)
 - Over 40 supported languages (upload subtitles in almost any language you want)
 - Skip Music (for this to work, choose subtitle files that indicate music with ♪ or [Music])
+- Skip Silence (for this, enable the Silence Indicator in the subtitle menu)
 - Select/Copy subtitle text (turn on Edit Mode to enable this feature)
 
 ## Skipping Violent Scenes and Adult Content
