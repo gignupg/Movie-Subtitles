@@ -8,7 +8,7 @@ import Switch from '@material-ui/core/Switch';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const Advanced = () => {
-  const [silenceIndicator, setSilenceIndicator] = useState(true);
+  const [silenceIndicator, setSilenceIndicator] = useState(false);
   const [editMode, setEditMode] = useState(false);
 
   // Retrieving the silence and editMode settings from chrome storage

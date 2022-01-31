@@ -83,7 +83,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
   const [subs, setSubs] = useState(subsRef.current);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
-  const [silenceIndicator, setSilenceIndicator] = useState(true);
+  const [silenceIndicator, setSilenceIndicator] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [displaySubtitles, setDisplaySubtitles] = useState(true);
   const [infoDialog, setInfoDialog] = useState('');
