@@ -77,7 +77,7 @@ const SubtitleArea = styled('div')({
   margin: 0,
 });
 
-function Subtitles({ video, speedDisplay, netflix, editRef }) {
+function Subtitles({ video, subsEnabled, speedDisplay, netflix, editRef }) {
   const [forcedPause, setForcedPause] = useState(false);
   const subsRef = useRef([{ text: subtitles.text.default }]);
   const [subs, setSubs] = useState(subsRef.current);
@@ -126,12 +126,15 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
   });
 
   useEffect(() => {
-    if (!silenceIndicator && /Silence \(.*\)/.test(subs[pos].text)) {
-      setDisplaySubtitles(false);
-    } else {
-      setDisplaySubtitles(true);
+    if (subsEnabled) {
+      if (!silenceIndicator && /Silence \(.*\)/.test(subs[pos].text)) {
+        setDisplaySubtitles(false);
+      } else {
+        setDisplaySubtitles(true);
+      }
     }
-  }, [pos, silenceIndicator, subs]);
+
+  }, [pos, silenceIndicator, subs, subsEnabled]);
 
   useEffect(() => {
     prepareTimeUpdate();
@@ -189,7 +192,6 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
                 setSubtitleColor(subtitles.color.default);
 
               } catch(err) {
-                console.log('Catch in processSubtitles()!', err);
                 setInfoDialog(subtitles.text.error.damagedFile);
                 setSubtitleColor(subtitles.color.error);
               }
@@ -326,7 +328,7 @@ function Subtitles({ video, speedDisplay, netflix, editRef }) {
   return (
     <Draggable axis="y" disabled={editMode}>
       <Container>
-        {displaySubtitles && (
+        {(subsEnabled && displaySubtitles) && (
           <SubtitleWrapper
             style={{
               backgroundColor: `rgba(0,0,0,${opacity})`,

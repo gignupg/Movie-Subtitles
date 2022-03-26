@@ -16,10 +16,8 @@ const BlurredBackground = styled('div')({
 });
 
 export default function Content({ video, iconWrapper }) {
-  const displaySubtitleRef = useRef(true);
-  const [displaySubtitles, setDisplaySubtitles] = useState(
-    displaySubtitleRef.current
-  );
+  const subsEnabledRef = useRef(true);
+  const [subsEnabled, setSubsEnabled] = useState(subsEnabledRef.current);
   const speedRef = useRef(0);
   const [speedDisplay, setSpeedDisplay] = useState(false);
   const [menu, setMenu] = useState(false);
@@ -64,8 +62,8 @@ export default function Content({ video, iconWrapper }) {
               document.execCommand('copy');
             } else {
               // Making sure only to toggle subtitles when not in editMode. In edit mode we copy the subtitles instead of toggling them.
-              displaySubtitleRef.current = !displaySubtitleRef.current;
-              setDisplaySubtitles(displaySubtitleRef.current);
+              subsEnabledRef.current = !subsEnabledRef.current;
+              setSubsEnabled(subsEnabledRef.current);
             }
             event.preventDefault();
             event.stopPropagation();
@@ -132,14 +130,13 @@ export default function Content({ video, iconWrapper }) {
   return (
     <>
       {menu && <BlurredBackground onClick={() => setMenu(false)} />}
-      {displaySubtitles && (
         <Subtitles
           video={video}
+          subsEnabled={subsEnabled}
           speedDisplay={speedDisplay}
           netflix={netflix}
           editRef={editRef}
         />
-      )}
       <PopupWrapper
         popup={false}
         setMenu={setMenu}
