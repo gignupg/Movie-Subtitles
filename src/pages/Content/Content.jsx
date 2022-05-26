@@ -119,6 +119,18 @@ export default function Content({ video, iconWrapper }) {
             }, 2000);
             event.preventDefault();
             event.stopPropagation();
+          } else if (key === 'g') {
+            // Sync subtitles (display them 1 second earlier)
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: false } });
+            document.dispatchEvent(syncNow);
+            event.preventDefault();
+            event.stopPropagation();
+          } else if (key === 'h') {
+            // Sync subtitles (display them 1 second later)
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: true } });
+            document.dispatchEvent(syncNow);
+            event.preventDefault();
+            event.stopPropagation();
           }
         }
       },

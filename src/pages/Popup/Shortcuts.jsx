@@ -118,6 +118,16 @@ export default function Shortcuts({ setDisplayShortcuts, thisSite }) {
         <ShortcutItem>w</ShortcutItem>
       </ShortcutWrapper>
       <Divider />
+      <ShortcutWrapper>
+        <ShortcutItem>Sync subtitles (1s earlier)</ShortcutItem>
+        <ShortcutItem>g</ShortcutItem>
+      </ShortcutWrapper>
+      <Divider />
+      <ShortcutWrapper>
+        <ShortcutItem>Sync subtitles (1s later)</ShortcutItem>
+        <ShortcutItem>h</ShortcutItem>
+      </ShortcutWrapper>
+      <Divider />
     </Container>
   );
 }
