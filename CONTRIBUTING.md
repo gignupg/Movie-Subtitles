@@ -19,3 +19,11 @@ Making changes to the code and testing them:
 4. Reload the extension for the changes to take effect
 5. Open a video and verify that you can see your changes
 7. That's it. Happy coding!
+
+## Building for Production
+At the moment this is just a personal note for myself since I'm the only person who can publish a new version to the Chrome Web Store:
+1. Update the version number in `src/manifest.json`
+2. Remove the root-level `build` folder
+3. `$ NODE_ENV=production npm run build`
+4. Zip the newly created `build` folder
+5. Upload the zipped `build` folder to the Chrome Web Store
