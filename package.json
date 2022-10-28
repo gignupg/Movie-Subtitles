@@ -1,6 +1,6 @@
 {
   "name": "movie-subtitles",
-  "version": "1.7.0",
+  "version": "1.7.1",
   "description": "Add your own subtitles anywhere and skip unpleasant scenes between dialogues thanks to Movie Subtitle's silence indicator!",
   "license": "MIT",
   "repository": {
@@ -52,7 +52,7 @@
     "fs-extra": "^9.1.0",
     "html-loader": "^2.1.0",
     "html-webpack-plugin": "^5.2.0",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "prettier": "^2.2.1",
     "sass-loader": "^11.0.1",
     "source-map-loader": "^2.0.1",

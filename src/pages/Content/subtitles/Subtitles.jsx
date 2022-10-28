@@ -271,14 +271,12 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, editRef }) {
           synchronize(data, subsRef, setSubs);
 
           // Displaying success message for 2 seconds
-          setInfoDialog(subtitles.text.success)
           setSubtitleColor(subtitles.color.success);
 
           const syncInterval = setInterval(() => {
-            setInfoDialog('');
             setSubtitleColor(subtitles.color.default);
             clearInterval(syncInterval);
-          }, 2000)
+          }, 100)
         }
       },
       false
