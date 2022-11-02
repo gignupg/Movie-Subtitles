@@ -334,7 +334,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, editRef }) {
             onMouseEnter={pauseHandler}
             onMouseLeave={playHandler}
           >
-            {(!netflix && !infoDialog) && (
+            {(!netflix && !infoDialog && silenceIndicator) && (
               <SubtitleButton
                 onClick={handlePrevButton}
                 id="movie-subtitles-prev-button"
@@ -387,7 +387,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, editRef }) {
                 </Grid>
               )}
             </SubtitleArea>
-            {(!netflix && !infoDialog) && (
+            {(!netflix && !infoDialog && silenceIndicator) && (
               <SubtitleButton
                 onClick={handleNextButton}
                 id="movie-subtitles-next-button"
