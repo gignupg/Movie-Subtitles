@@ -2,7 +2,7 @@
 
 ![Movie Subtitles Logo](src/assets/img/movie-subtitles-48.png)
 
-Do you love to watch movies but hate when there are too many long scenes between dialogues? Movie Subtitles let's you know whenever there is a long scene without speech, so you can skip right to the next dialogue.
+Add your own subtitles on almost any video/movie streaming platform you can think of, such as Amazon Prime, Disney Plus, Netflix (with some restrictions), Youtube, Twitch and many more!
 
 ![previous sentence](src/assets/screenshots/33-seconds-silence.png)
 
@@ -22,13 +22,9 @@ Once you've got the subtitles you're good to go!
 
 > Note: Movie Subtitles supports `.txt`, `.srt`, and `.sub` files. If your subtitles are inside a compressed archive/zip folder, you will have to extract/unzip them first.
 
-## Subtitles Anywhere
-
-Movie Subtitles works on almost all video/movie streaming platforms such as Amazon Prime, Disney Plus, Netflix (with some restrictions), Youtube, Vimeo, Twitch and many more!
-
 ## Useful Features
 
-Didn't catch a phrase? Listen to it again by clicking the arrow next to the subtitles.
+Didn't catch a phrase? Listen to it again by clicking the arrow next to the subtitles. Make sure to enable the silence indicator in the settings before using this feature!
 
 ![previous sentence](src/assets/screenshots/previous-sentence.png)
 
