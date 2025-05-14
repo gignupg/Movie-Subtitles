@@ -2,7 +2,7 @@
 
 ![Movie Subtitles Logo](src/assets/img/movie-subtitles-48.png)
 
-Add your own subtitles on almost any video/movie streaming platform you can think of, such as Amazon Prime, Disney Plus, Netflix (with some restrictions), Youtube, Twitch and many more!
+Add your own subtitles on almost any video/movie streaming platform you can think of, such as Amazon Prime, Netflix (with some restrictions), Youtube, Twitch and many more!
 
 ![previous sentence](src/assets/screenshots/33-seconds-silence.png)
 
