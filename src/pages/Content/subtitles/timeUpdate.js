@@ -18,7 +18,7 @@ export default function timeUpdate(subs, video, pos, setPos) {
       // Method 3: Shadow DOM `aria-valuenow` (least precise, e.g. `2993`)
       else {
         const timeElement = progressBar?.shadowRoot?.querySelector('[aria-valuenow]');
-        if (timeElement?. ariaValueNow != null) {
+        if (timeElement?.ariaValueNow != null) {
           timeInSeconds = Number(timeElement.ariaValueNow); // Already in seconds
         }
       }
