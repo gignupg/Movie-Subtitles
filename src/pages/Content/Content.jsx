@@ -91,22 +91,22 @@ export default function Content({ video, iconWrapper }) {
             event.stopPropagation();
           } else if (key === 'a' && !netflix && !disney && !amazon) {
             // Previous Sentence
-            document.getElementById('movie-subtitles-prev-button').click();
+            document.dispatchEvent(new CustomEvent('sentenceNavigation', { detail: 'previous' }));
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 's' && !netflix && !disney && !amazon) {
             // Next Sentence
-            document.getElementById('movie-subtitles-next-button').click();
+            document.dispatchEvent(new CustomEvent('sentenceNavigation', { detail: 'next' }));
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 's' && amazon) {
             // Previous Sentence (Amazon)
-            document.getElementById('movie-subtitles-prev-button').click();
+            document.dispatchEvent(new CustomEvent('sentenceNavigation', { detail: 'previous' }));
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 'd' && amazon) {
             // Next Sentence (Amazon)
-            document.getElementById('movie-subtitles-next-button').click();
+            document.dispatchEvent(new CustomEvent('sentenceNavigation', { detail: 'next' }));
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 'q') {

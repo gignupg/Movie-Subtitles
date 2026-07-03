@@ -323,6 +323,22 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     prepareTimeUpdate();
   };
 
+  useEffect(() => {
+    function handleSentenceNavigation(e) {
+      if (e.detail === 'previous') {
+        handlePrevButton();
+      } else if (e.detail === 'next') {
+        handleNextButton();
+      }
+    }
+
+    document.addEventListener('sentenceNavigation', handleSentenceNavigation, false);
+
+    return () => {
+      document.removeEventListener('sentenceNavigation', handleSentenceNavigation, false);
+    };
+  }, [handlePrevButton, handleNextButton]);
+
   return (
     <Draggable axis="y" disabled={editMode}>
       <Container>
