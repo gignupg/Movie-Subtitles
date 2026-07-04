@@ -84,7 +84,9 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
   const [silenceIndicator, setSilenceIndicator] = useState(false);
+  const [sentenceNavigationButtons, setSentenceNavigationButtons] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [pauseOnHover, setPauseOnHover] = useState(false);
   const [displaySubtitles, setDisplaySubtitles] = useState(true);
   const [infoDialog, setInfoDialog] = useState('');
   const [subtitleColor, setSubtitleColor] = useState(subtitles.color.default);
@@ -119,9 +121,15 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     if (storage.silence !== undefined && silenceIndicator !== storage.silence) {
       setSilenceIndicator(storage.silence);
     }
+    if (storage.sentenceNavigationButtons !== undefined && sentenceNavigationButtons !== storage.sentenceNavigationButtons) {
+      setSentenceNavigationButtons(storage.sentenceNavigationButtons);
+    }
     if (storage.editMode !== undefined && editMode !== storage.editMode) {
       editRef.current = storage.editMode;
       setEditMode(storage.editMode);
+    }
+    if (storage.pauseOnHover !== undefined && pauseOnHover !== storage.pauseOnHover) {
+      setPauseOnHover(storage.pauseOnHover);
     }
   });
 
@@ -151,14 +159,18 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     // Make sure only to set up one listener!
     setListening(true);
 
-    // Updating the silence indicator whenever it is changed
+    // Updating advanced settings whenever they are changed
     chrome.storage.onChanged.addListener(function (changes) {
       for (let [key, { _, newValue }] of Object.entries(changes)) {
         if (key === 'silence') {
           setSilenceIndicator(newValue);
+        } else if (key === 'sentenceNavigationButtons') {
+          setSentenceNavigationButtons(newValue);
         } else if (key === 'editMode') {
           editRef.current = newValue;
           setEditMode(newValue);
+        } else if (key === 'pauseOnHover') {
+          setPauseOnHover(newValue);
         }
       }
     });
@@ -347,10 +359,10 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
             style={{
               backgroundColor: `rgba(0,0,0,${opacity})`,
             }}
-            onMouseEnter={pauseHandler}
+            onMouseEnter={pauseOnHover ? pauseHandler : undefined}
             onMouseLeave={playHandler}
           >
-            {(!netflix && !disney && !infoDialog && silenceIndicator) && (
+            {(!netflix && !disney && !infoDialog && sentenceNavigationButtons) && (
               <SubtitleButton
                 onClick={handlePrevButton}
                 id="movie-subtitles-prev-button"
@@ -403,7 +415,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
                 </Grid>
               )}
             </SubtitleArea>
-            {(!netflix && !disney && !infoDialog && silenceIndicator) && (
+            {(!netflix && !disney && !infoDialog && sentenceNavigationButtons) && (
               <SubtitleButton
                 onClick={handleNextButton}
                 id="movie-subtitles-next-button"

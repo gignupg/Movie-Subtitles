@@ -9,15 +9,23 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const Advanced = () => {
   const [silenceIndicator, setSilenceIndicator] = useState(false);
+  const [sentenceNavigationButtons, setSentenceNavigationButtons] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [pauseOnHover, setPauseOnHover] = useState(false);
 
-  // Retrieving the silence and editMode settings from chrome storage
+  // Retrieving advanced settings from chrome storage
   chrome.storage.sync.get(null, function (storage) {
     if (storage.silence !== undefined && silenceIndicator !== storage.silence) {
       setSilenceIndicator(storage.silence);
-
-    } else if (storage.editMode !== undefined && editMode !== storage.editMode) {
+    }
+    if (storage.sentenceNavigationButtons !== undefined && sentenceNavigationButtons !== storage.sentenceNavigationButtons) {
+      setSentenceNavigationButtons(storage.sentenceNavigationButtons);
+    }
+    if (storage.editMode !== undefined && editMode !== storage.editMode) {
       setEditMode(storage.editMode)
+    }
+    if (storage.pauseOnHover !== undefined && pauseOnHover !== storage.pauseOnHover) {
+      setPauseOnHover(storage.pauseOnHover);
     }
   });
 
@@ -34,6 +42,22 @@ const Advanced = () => {
     setEditMode(!editMode);
     chrome.storage.sync.set({
       editMode: !editMode,
+    });
+  }
+
+  function sentenceNavigationButtonsHandler(e) {
+    e.preventDefault();
+    setSentenceNavigationButtons(!sentenceNavigationButtons);
+    chrome.storage.sync.set({
+      sentenceNavigationButtons: !sentenceNavigationButtons,
+    });
+  }
+
+  function pauseOnHoverHandler(e) {
+    e.preventDefault();
+    setPauseOnHover(!pauseOnHover);
+    chrome.storage.sync.set({
+      pauseOnHover: !pauseOnHover,
     });
   }
 
@@ -56,12 +80,36 @@ const Advanced = () => {
         <ListItem button>
           <ListItemText
             style={{ color: 'black' }}
+            primary="Sentence Nav Buttons"
+          />
+          <ListItemSecondaryAction>
+            <FormControlLabel
+              control={<Switch checked={sentenceNavigationButtons} />}
+              onClick={sentenceNavigationButtonsHandler}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem button>
+          <ListItemText
+            style={{ color: 'black' }}
             primary="Edit Mode"
           />
           <ListItemSecondaryAction>
             <FormControlLabel
               control={<Switch checked={editMode} />}
               onClick={editModeHandler}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+        <ListItem button>
+          <ListItemText
+            style={{ color: 'black' }}
+            primary="Pause On Hover"
+          />
+          <ListItemSecondaryAction>
+            <FormControlLabel
+              control={<Switch checked={pauseOnHover} />}
+              onClick={pauseOnHoverHandler}
             />
           </ListItemSecondaryAction>
         </ListItem>
