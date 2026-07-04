@@ -17,12 +17,12 @@ const subtitles = {
   text: {
     default: 'No subtitles loaded',
     error: {
-      format: 'Wrong format! Please, use .srt, .sub, or .txt subtitles!',
+      format: 'Wrong format! Please, use .srt, .sub, .txt, .ass, or .ssa subtitles!',
       damagedFile: 'Damaged subtitle file! Please, try another one!'
     },
     success: 'Synchronisation successful!',
   },
-  types: ['application/x-subrip', 'text/plain', 'text/x-microdvd'],   // .srt, .txt, .sub
+  types: ['application/x-subrip', 'text/plain', 'text/x-microdvd'],   // .srt, .txt, .sub, .ass, .ssa
 }
 
 const useStyles = makeStyles(() => ({
@@ -168,7 +168,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
       'fileUpload',
       function (e) {
         const file = e.detail;
-        const extRegEx = new RegExp('^.*\.(srt|sub|txt)$', 'i');
+        const extRegEx = new RegExp('^.*\.(srt|sub|txt|ass|ssa)$', 'i');
         const validExt = extRegEx.test(file.name);
 
         // Resetting any previously loaded subtitles
@@ -177,7 +177,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
         setSubs(subsRef.current);
 
         if (subtitles.types.includes(file.type) || validExt) {
-          // Making sure it's either .srt, .txt, or .sub
+          // Making sure it's a supported subtitle format.
           languageEncoding(file)
           .then((fileInfo) => {
             const reader = new FileReader();
