@@ -57,6 +57,20 @@ const msTheme = createMuiTheme({
         position: 'absolute !important',
       },
     },
+    MuiSelect: {
+      select: {
+        fontSize: '16px !important',
+      },
+      icon: {
+        width: '24px !important',
+        height: '24px !important',
+      },
+    },
+    MuiMenuItem: {
+      root: {
+        fontSize: '16px !important',
+      },
+    },
   },
 });
 

@@ -28,6 +28,7 @@ const subtitles = {
 const useStyles = makeStyles(() => ({
   root: {
     fontSize: (props) => props.fontSize,
+    fontFamily: (props) => props.fontFamily,
   },
 }));
 
@@ -50,7 +51,6 @@ const SubtitleWrapper = styled('div')({
   paddingRight: '15px',
   borderRadius: '40px',
   pointerEvents: 'all',
-  fontFamily: 'sans-serif',
   color: subtitles.color.default,
 });
 
@@ -92,6 +92,8 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
   const [subtitleColor, setSubtitleColor] = useState(subtitles.color.default);
   const fontRef = useRef(24);
   const [fontSize, setFontSize] = useState(fontRef.current);
+  const fontFamilyRef = useRef('sans-serif');
+  const [fontFamily, setFontFamily] = useState(fontFamilyRef.current);
   const opacityRef = useRef(0.5);
   const [opacity, setOpacity] = useState(opacityRef.current);
   const [listening, setListening] = useState(false);
@@ -105,7 +107,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
 
   // By using classes (useStyles) we can overwrite global css rules.
   // In this case the Chrome Extension 'TubeBuddy' was overwriting the fontSize...
-  const props = { fontSize: fontSize };
+  const props = { fontSize: fontSize, fontFamily: fontFamily };
   const classes = useStyles(props);
 
   // Retrieving user specific settings from chrome storage
@@ -113,6 +115,10 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     if (storage.fontSize !== undefined) {
       fontRef.current = storage.fontSize;
       setFontSize(storage.fontSize);
+    }
+    if (storage.fontFamily !== undefined) {
+      fontFamilyRef.current = storage.fontFamily;
+      setFontFamily(storage.fontFamily);
     }
     if (storage.opacity !== undefined) {
       opacityRef.current = storage.opacity;
@@ -231,6 +237,15 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
       'displaySettings',
       function (e) {
         const action = e.detail;
+
+        if (action && action.type === 'font-family') {
+          fontFamilyRef.current = action.value;
+          setFontFamily(action.value);
+          chrome.storage.sync.set({
+            fontFamily: action.value,
+          });
+          return;
+        }
 
         switch (action) {
           case 'font-smaller':

@@ -37,7 +37,7 @@ Want to use convenient shortcuts? There's a variety of shortcuts you can use.
 ## Other Useful Features
 
 - Synchronization (show subtitles a little earlier/later)
-- Style (adjust the subtitle size, background, and position)
+- Style (adjust the subtitle size, font family, background, and position)
 - Over 40 supported languages (upload subtitles in almost any language you want)
 - Skip Music (for this, choose subtitle files that indicate music with ♪ or [Music])
 - Skip Silence (for this, enable the Silence Indicator in the main menu)
