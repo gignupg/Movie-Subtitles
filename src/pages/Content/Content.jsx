@@ -133,13 +133,13 @@ export default function Content({ video, iconWrapper }) {
             event.stopPropagation();
           } else if (key === 'g') {
             // Sync subtitles (display them 1 second earlier)
-            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: false } });
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: -1, relative: true } });
             document.dispatchEvent(syncNow);
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 'h') {
             // Sync subtitles (display them 1 second later)
-            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: true } });
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, relative: true } });
             document.dispatchEvent(syncNow);
             event.preventDefault();
             event.stopPropagation();

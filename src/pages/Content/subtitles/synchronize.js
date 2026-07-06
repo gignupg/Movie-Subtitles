@@ -1,39 +1,45 @@
-export default function synchronize(data, subsRef, setSubs) {
+export default function synchronize(data, subsRef, setSubs, originalSubsRef, currentOffsetRef) {
   const subs = subsRef.current;
 
   if (subs.length > 1) {
-    let offset = 0;
+    let newTotalOffset;
 
-    if (!data.syncLater) {
-      offset = data.syncValue * -1;
+    if (data.relative) {
+      newTotalOffset = currentOffsetRef.current + data.syncValue;
     } else {
-      offset = data.syncValue;
+      newTotalOffset = data.syncValue;
     }
 
-    // Calculate the new start and end times for the whole subtitle array
+    const delta = newTotalOffset - currentOffsetRef.current;
+
+    if (delta === 0) {
+      return;
+    }
+
     const calibratedSubs = [];
     subs.forEach((elem) => {
       if (elem.music) {
         calibratedSubs.push({
-          start: elem.start + offset,
-          end: elem.end + offset,
+          start: elem.start + delta,
+          end: elem.end + delta,
           text: elem.text,
           music: {
             text: elem.music.text,
-            start: elem.music.start + offset,
-            end: elem.music.end + offset,
+            start: elem.music.start + delta,
+            end: elem.music.end + delta,
           },
         });
       } else {
         calibratedSubs.push({
-          start: elem.start + offset,
-          end: elem.end + offset,
+          start: elem.start + delta,
+          end: elem.end + delta,
           text: elem.text,
         });
       }
     });
 
     subsRef.current = calibratedSubs;
+    currentOffsetRef.current = newTotalOffset;
     setSubs(calibratedSubs);
   }
 }

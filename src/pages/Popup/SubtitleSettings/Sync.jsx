@@ -1,7 +1,4 @@
 import React, { useState } from 'react';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MenuHeading from '../MenuHeading';
@@ -17,11 +14,23 @@ const useStyles = makeStyles({
   input: {
     width: 42,
   },
+  offsetLabel: {
+    fontSize: '0.85rem',
+    color: '#555',
+    fontWeight: '500',
+  },
+  offsetValue: {
+    fontSize: '0.9rem',
+    fontWeight: '500',
+  },
+  sliderLabel: {
+    fontSize: '0.75rem',
+    color: '#666',
+  },
 });
 
 const Sync = ({ popup }) => {
   const classes = useStyles();
-  const [direction, setDirection] = useState(false);
   const [syncValue, setSyncValue] = useState(0);
   const [listening, setListening] = useState(false);
 
@@ -34,10 +43,8 @@ const Sync = ({ popup }) => {
   };
 
   const handleBlur = () => {
-    if (syncValue < 0) {
+    if (syncValue === '' || isNaN(syncValue)) {
       setSyncValue(0);
-    } else if (syncValue > 10) {
-      setSyncValue(10);
     }
   };
 
@@ -58,8 +65,7 @@ const Sync = ({ popup }) => {
   if (!popup && !listening) {
     setListening(true);
     chrome.runtime.onMessage.addListener((msg) => {
-      if (msg.syncValue) {
-        // This time calling handleSync from the content script instead of from the popup
+      if (msg.syncValue !== undefined) {
         handleSync(msg);
       }
     });
@@ -69,45 +75,12 @@ const Sync = ({ popup }) => {
     <>
       <MenuHeading heading="Synchronization:" />
       <Container>
-        <Box my={2}>
-          <FormControl component="fieldset">
-            <FormGroup>
-              <Typography component="div">
-                <Grid
-                  component="label"
-                  container
-                  alignItems="center"
-                  spacing={1}
-                >
-                  <Grid item style={{ color: 'black', fontWeight: '400' }}>
-                    Earlier
-                  </Grid>
-                  <Grid item>
-                    <Switch
-                      checked={direction}
-                      onChange={() => setDirection(direction ? false : true)}
-                      color="default"
-                    />
-                  </Grid>
-                  <Grid item style={{ color: 'black', fontWeight: '400' }}>
-                    Later
-                  </Grid>
-                </Grid>
+        <Box mt={1} mb={2}>
+          <Grid container alignItems="center" justify="space-between">
+            <Grid item>
+              <Typography className={classes.offsetLabel}>
+                Total Subtitle Offset:
               </Typography>
-            </FormGroup>
-          </FormControl>
-        </Box>
-        <Box my={2}>
-          <Grid container spacing={4} alignItems="center">
-            <Grid item xs>
-              <Slider
-                value={typeof syncValue === 'number' ? syncValue : 0}
-                onChange={handleSliderChange}
-                aria-labelledby="input-slider"
-                step={0.1}
-                min={0}
-                max={10}
-              />
             </Grid>
             <Grid item style={{ lineHeight: '10px' }}>
               <Input
@@ -118,8 +91,6 @@ const Sync = ({ popup }) => {
                 onBlur={handleBlur}
                 inputProps={{
                   step: 0.1,
-                  min: 0,
-                  max: 10,
                   type: 'number',
                   'aria-labelledby': 'input-slider',
                 }}
@@ -127,12 +98,28 @@ const Sync = ({ popup }) => {
             </Grid>
           </Grid>
         </Box>
+        <Box mb={1}>
+          <Slider
+            value={typeof syncValue === 'number' ? syncValue : 0}
+            onChange={handleSliderChange}
+            aria-labelledby="input-slider"
+            step={0.1}
+            min={-10}
+            max={10}
+          />
+          <Grid container justify="space-between">
+            <Grid item>
+              <Typography className={classes.sliderLabel}>Earlier</Typography>
+            </Grid>
+            <Grid item>
+              <Typography className={classes.sliderLabel}>Later</Typography>
+            </Grid>
+          </Grid>
+        </Box>
         <Box my={4}>
           <Grid container justify="center">
             <Button
-              onClick={() =>
-                handleSync({ syncValue: syncValue, syncLater: direction })
-              }
+              onClick={() => handleSync({ syncValue: syncValue })}
               variant="contained"
               color="primary"
               endIcon={<SyncIcon />}
