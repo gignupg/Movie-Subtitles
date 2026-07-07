@@ -81,6 +81,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
   const [forcedPause, setForcedPause] = useState(false);
   const subsRef = useRef([{ text: subtitles.text.default }]);
   const [subs, setSubs] = useState(subsRef.current);
+  const currentOffsetRef = useRef(0);
   const [pos, setPos] = useState(0);
   const [musicHover, setMusicHover] = useState(false);
   const [silenceIndicator, setSilenceIndicator] = useState(false);
@@ -155,8 +156,8 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
 
     if (amazon && upload) {
       setUpload(false);
-      const data = { syncValue: 10, syncLater: true };
-      synchronize(data, subsRef, setSubs);
+      const data = { syncValue: 10 };
+      synchronize(data, subsRef, setSubs, null, currentOffsetRef);
     }
     // eslint-disable-next-line
   }, [subs]);
@@ -189,10 +190,10 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
         const extRegEx = new RegExp('^.*\.(srt|sub|txt|ass|ssa)$', 'i');
         const validExt = extRegEx.test(file.name);
 
-        // Resetting any previously loaded subtitles
         setPos(0);
         subsRef.current = [{ text: subtitles.text.default }];
         setSubs(subsRef.current);
+        currentOffsetRef.current = 0;
 
         if (subtitles.types.includes(file.type) || validExt) {
           // Making sure it's a supported subtitle format.
@@ -294,8 +295,8 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
       'syncNow',
       function (e) {
         const data = e.detail;
-        if (data.syncValue && subsRef.current.length > 1) {
-          synchronize(data, subsRef, setSubs);
+        if (data.syncValue !== undefined && subsRef.current.length > 1) {
+          synchronize(data, subsRef, setSubs, null, currentOffsetRef);
 
           // Displaying success message for 2 seconds
           setSubtitleColor(subtitles.color.success);

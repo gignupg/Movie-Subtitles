@@ -33,6 +33,21 @@ export default function Content({ video, iconWrapper }) {
     }
   });
 
+  // Keep the host page's own keyboard shortcuts (e.g. YouTube's number-key seek)
+  // from firing while the user is typing inside our injected menu. Native
+  // stopPropagation() here only blocks other listeners from seeing the event -
+  // it doesn't call preventDefault(), so the keystroke still reaches and types
+  // into our own input normally.
+  useEffect(() => {
+    function blockHostShortcuts(event) {
+      if (event.target.closest && event.target.closest('#movie-subtitles-scroll-anchor')) {
+        event.stopPropagation();
+      }
+    }
+    window.addEventListener('keydown', blockHostShortcuts, true);
+    return () => window.removeEventListener('keydown', blockHostShortcuts, true);
+  }, []);
+
   // Listen for shortcut keypress events
   useEffect(() => {
     // Display the icon
@@ -133,13 +148,13 @@ export default function Content({ video, iconWrapper }) {
             event.stopPropagation();
           } else if (key === 'g') {
             // Sync subtitles (display them 1 second earlier)
-            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: false } });
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: -1, relative: true } });
             document.dispatchEvent(syncNow);
             event.preventDefault();
             event.stopPropagation();
           } else if (key === 'h') {
             // Sync subtitles (display them 1 second later)
-            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, syncLater: true } });
+            const syncNow = new CustomEvent('syncNow', { detail: { syncValue: 1, relative: true } });
             document.dispatchEvent(syncNow);
             event.preventDefault();
             event.stopPropagation();

@@ -5,7 +5,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Switch from '@material-ui/core/Switch';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const Advanced = () => {
   const [silenceIndicator, setSilenceIndicator] = useState(false);
@@ -71,8 +70,9 @@ const Advanced = () => {
             primary="Silence Indicator"
           />
           <ListItemSecondaryAction>
-            <FormControlLabel
-              control={<Switch checked={silenceIndicator} />}
+            <Switch
+              edge="end"
+              checked={silenceIndicator}
               onClick={silenceSwitchHandler}
             />
           </ListItemSecondaryAction>
@@ -83,8 +83,9 @@ const Advanced = () => {
             primary="Sentence Nav Buttons"
           />
           <ListItemSecondaryAction>
-            <FormControlLabel
-              control={<Switch checked={sentenceNavigationButtons} />}
+            <Switch
+              edge="end"
+              checked={sentenceNavigationButtons}
               onClick={sentenceNavigationButtonsHandler}
             />
           </ListItemSecondaryAction>
@@ -95,8 +96,9 @@ const Advanced = () => {
             primary="Edit Mode"
           />
           <ListItemSecondaryAction>
-            <FormControlLabel
-              control={<Switch checked={editMode} />}
+            <Switch
+              edge="end"
+              checked={editMode}
               onClick={editModeHandler}
             />
           </ListItemSecondaryAction>
@@ -107,8 +109,9 @@ const Advanced = () => {
             primary="Pause On Hover"
           />
           <ListItemSecondaryAction>
-            <FormControlLabel
-              control={<Switch checked={pauseOnHover} />}
+            <Switch
+              edge="end"
+              checked={pauseOnHover}
               onClick={pauseOnHoverHandler}
             />
           </ListItemSecondaryAction>
