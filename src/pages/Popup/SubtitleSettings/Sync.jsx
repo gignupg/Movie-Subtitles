@@ -3,6 +3,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MenuHeading from '../MenuHeading';
 import Container from '@material-ui/core/Container';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Slider from '@material-ui/core/Slider';
 import Input from '@material-ui/core/Input';
 import { makeStyles } from '@material-ui/core/styles';
@@ -12,22 +16,14 @@ import Box from '@material-ui/core/Box';
 
 const useStyles = makeStyles({
   input: {
-    width: 42,
-  },
-  offsetLabel: {
-    fontSize: '0.85rem',
-    color: '#555',
-    fontWeight: '500',
-  },
-  offsetValue: {
-    fontSize: '0.9rem',
-    fontWeight: '500',
-  },
-  sliderLabel: {
-    fontSize: '0.75rem',
-    color: '#666',
+    width: 50,
   },
 });
+
+const sliderLabelStyle = {
+  fontSize: '0.6rem',
+  color: '#666',
+};
 
 const Sync = ({ popup }) => {
   const classes = useStyles();
@@ -74,30 +70,29 @@ const Sync = ({ popup }) => {
   return (
     <>
       <MenuHeading heading="Synchronization:" />
+      <List component="nav" aria-label="main mailbox folders">
+        <ListItem button>
+          <ListItemText
+            style={{ color: 'black' }}
+            primary="Total Subtitle Offset"
+          />
+          <ListItemSecondaryAction>
+            <Input
+              className={classes.input}
+              value={syncValue}
+              margin="dense"
+              onChange={handleInputChange}
+              onBlur={handleBlur}
+              inputProps={{
+                step: 0.1,
+                type: 'number',
+                'aria-labelledby': 'input-slider',
+              }}
+            />
+          </ListItemSecondaryAction>
+        </ListItem>
+      </List>
       <Container>
-        <Box mt={1} mb={2}>
-          <Grid container alignItems="center" justify="space-between">
-            <Grid item>
-              <Typography className={classes.offsetLabel}>
-                Total Subtitle Offset:
-              </Typography>
-            </Grid>
-            <Grid item style={{ lineHeight: '10px' }}>
-              <Input
-                className={classes.input}
-                value={syncValue}
-                margin="dense"
-                onChange={handleInputChange}
-                onBlur={handleBlur}
-                inputProps={{
-                  step: 0.1,
-                  type: 'number',
-                  'aria-labelledby': 'input-slider',
-                }}
-              />
-            </Grid>
-          </Grid>
-        </Box>
         <Box mb={1}>
           <Slider
             value={typeof syncValue === 'number' ? syncValue : 0}
@@ -109,10 +104,10 @@ const Sync = ({ popup }) => {
           />
           <Grid container justify="space-between">
             <Grid item>
-              <Typography className={classes.sliderLabel}>Earlier</Typography>
+              <Typography style={sliderLabelStyle}>Earlier</Typography>
             </Grid>
             <Grid item>
-              <Typography className={classes.sliderLabel}>Later</Typography>
+              <Typography style={sliderLabelStyle}>Later</Typography>
             </Grid>
           </Grid>
         </Box>
