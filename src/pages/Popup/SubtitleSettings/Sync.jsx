@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import MenuHeading from '../MenuHeading';
@@ -28,7 +28,33 @@ const sliderLabelStyle = {
 const Sync = ({ popup }) => {
   const classes = useStyles();
   const [syncValue, setSyncValue] = useState(0);
-  const [listening, setListening] = useState(false);
+
+  useEffect(() => {
+    if (popup) {
+      chrome.tabs.query({ currentWindow: true, active: true }, function (tab) {
+        chrome.tabs.sendMessage(tab[0].id, { getSubtitleOffset: true }, function (response) {
+          if (chrome.runtime.lastError) {
+            return;
+          }
+
+          if (response && response.syncValue !== undefined) {
+            setSyncValue(response.syncValue);
+          }
+        });
+      });
+      return;
+    }
+
+    function handleSubtitleOffsetChanged(event) {
+      setSyncValue(event.detail);
+    }
+
+    document.addEventListener('subtitleOffsetChanged', handleSubtitleOffsetChanged, false);
+
+    return () => {
+      document.removeEventListener('subtitleOffsetChanged', handleSubtitleOffsetChanged, false);
+    };
+  }, [popup]);
 
   const handleSliderChange = (event, newValue) => {
     setSyncValue(newValue);
@@ -56,15 +82,6 @@ const Sync = ({ popup }) => {
       });
       document.dispatchEvent(syncNow);
     }
-  }
-
-  if (!popup && !listening) {
-    setListening(true);
-    chrome.runtime.onMessage.addListener((msg) => {
-      if (msg.syncValue !== undefined) {
-        handleSync(msg);
-      }
-    });
   }
 
   return (

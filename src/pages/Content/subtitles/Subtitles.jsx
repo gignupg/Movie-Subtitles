@@ -106,6 +106,31 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     Boolean(document.querySelector('.hideableTopButtons'))
   );
 
+  function notifySubtitleOffsetChanged() {
+    document.dispatchEvent(
+      new CustomEvent('subtitleOffsetChanged', {
+        detail: currentOffsetRef.current,
+      })
+    );
+  }
+
+  function applySynchronization(data, displaySuccess = true) {
+    if (data.syncValue !== undefined && subsRef.current.length > 1) {
+      synchronize(data, subsRef, setSubs, null, currentOffsetRef);
+      notifySubtitleOffsetChanged();
+
+      if (displaySuccess) {
+        // Displaying success message for 2 seconds
+        setSubtitleColor(subtitles.color.success);
+
+        const syncInterval = setInterval(() => {
+          setSubtitleColor(subtitles.color.default);
+          clearInterval(syncInterval);
+        }, 100)
+      }
+    }
+  }
+
   // By using classes (useStyles) we can overwrite global css rules.
   // In this case the Chrome Extension 'TubeBuddy' was overwriting the fontSize...
   const props = { fontSize: fontSize, fontFamily: fontFamily };
@@ -157,7 +182,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     if (amazon && upload) {
       setUpload(false);
       const data = { syncValue: 10 };
-      synchronize(data, subsRef, setSubs, null, currentOffsetRef);
+      applySynchronization(data, false);
     }
     // eslint-disable-next-line
   }, [subs]);
@@ -194,6 +219,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
         subsRef.current = [{ text: subtitles.text.default }];
         setSubs(subsRef.current);
         currentOffsetRef.current = 0;
+        notifySubtitleOffsetChanged();
 
         if (subtitles.types.includes(file.type) || validExt) {
           // Making sure it's a supported subtitle format.
@@ -294,21 +320,21 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     document.addEventListener(
       'syncNow',
       function (e) {
-        const data = e.detail;
-        if (data.syncValue !== undefined && subsRef.current.length > 1) {
-          synchronize(data, subsRef, setSubs, null, currentOffsetRef);
-
-          // Displaying success message for 2 seconds
-          setSubtitleColor(subtitles.color.success);
-
-          const syncInterval = setInterval(() => {
-            setSubtitleColor(subtitles.color.default);
-            clearInterval(syncInterval);
-          }, 100)
-        }
+        applySynchronization(e.detail);
       },
       false
     );
+
+    chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+      if (msg.getSubtitleOffset) {
+        sendResponse({ syncValue: currentOffsetRef.current });
+        return;
+      }
+
+      if (msg.syncValue !== undefined) {
+        applySynchronization(msg);
+      }
+    });
   }
 
   video.ontimeupdate = prepareTimeUpdate;
