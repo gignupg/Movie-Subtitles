@@ -80,6 +80,7 @@ const Popup = ({
   previouslyDetected,
   sitesWithSubtitles,
   thisSite,
+  menuOpen,
 }) => {
   const [displayShortcuts, setDisplayShortcuts] = useState(false);
   const [videoDetected, setVideoDetected] = useState(previouslyDetected);
@@ -135,7 +136,7 @@ const Popup = ({
           {popup && !videoDetected ? (
             <NoVideoDetected />
           ) : (
-            <SubtitleSettings popup={popup} setMenu={setMenu} />
+            <SubtitleSettings popup={popup} setMenu={setMenu} menuOpen={menuOpen} />
           )}
           <GeneralSection
             setDisplayShortcuts={setDisplayShortcuts}

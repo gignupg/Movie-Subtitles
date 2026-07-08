@@ -13,12 +13,12 @@ const Wrapper = styled('div')({
   zIndex: 2147483647,
 });
 
-const PopupWrapper = ({ popup, display, setMenu }) => {
+const PopupWrapper = ({ popup, display, setMenu, menuOpen }) => {
   const thisSite = window.location.hostname;
 
   return (
     <Wrapper id="movie-subtitles-scroll-anchor" style={{ display: display }}>
-      <Popup setMenu={setMenu} popup={popup} thisSite={thisSite} />
+      <Popup setMenu={setMenu} popup={popup} thisSite={thisSite} menuOpen={menuOpen} />
     </Wrapper>
   );
 };

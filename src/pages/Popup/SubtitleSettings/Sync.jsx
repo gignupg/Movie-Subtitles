@@ -25,9 +25,20 @@ const sliderLabelStyle = {
   color: '#666',
 };
 
-const Sync = ({ popup }) => {
+const Sync = ({ popup, menuOpen }) => {
   const classes = useStyles();
   const [syncValue, setSyncValue] = useState(0);
+
+  // The in-video menu never unmounts (only hidden via CSS), so an edit the
+  // user never confirmed with Sync Now would otherwise sit in local state
+  // forever. Pull the real current offset fresh every time the menu opens,
+  // discarding any unconfirmed edit - matching what the popup already gets
+  // for free by fully remounting on every open.
+  useEffect(() => {
+    if (!popup && menuOpen) {
+      document.dispatchEvent(new CustomEvent('requestSubtitleOffset'));
+    }
+  }, [popup, menuOpen]);
 
   useEffect(() => {
     if (popup) {

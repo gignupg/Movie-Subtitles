@@ -207,6 +207,11 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
       }
     });
 
+    // Let the in-video Sync menu pull the real current offset on demand—
+    // it never unmounts (only hidden), so it can't rely on mount alone to
+    // discard an edit that was never confirmed via Sync Now.
+    document.addEventListener('requestSubtitleOffset', notifySubtitleOffsetChanged, false);
+
     // Listen for fileUploads
     document.addEventListener(
       'fileUpload',

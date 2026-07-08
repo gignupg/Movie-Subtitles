@@ -4,12 +4,12 @@ import Display from './Display';
 import Sync from './Sync';
 import Advanced from './Advanced';
 
-const SubtitleSettings = ({ popup, setMenu }) => {
+const SubtitleSettings = ({ popup, setMenu, menuOpen }) => {
   return (
     <>
       <Upload popup={popup} setMenu={setMenu} />
       <Display popup={popup} />
-      <Sync popup={popup} />
+      <Sync popup={popup} menuOpen={menuOpen} />
       <Advanced />
     </>
   );

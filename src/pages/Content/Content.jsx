@@ -181,6 +181,7 @@ export default function Content({ video, iconWrapper }) {
         popup={false}
         setMenu={setMenu}
         display={menu ? 'block' : 'none'}
+        menuOpen={menu}
       />
     </>
   );
