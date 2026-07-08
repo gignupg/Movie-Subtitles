@@ -8,8 +8,8 @@ const SubtitleSettings = ({ popup, setMenu, menuOpen }) => {
   return (
     <>
       <Upload popup={popup} setMenu={setMenu} />
-      <Display popup={popup} />
       <Sync popup={popup} menuOpen={menuOpen} />
+      <Display popup={popup} />
       <Advanced />
     </>
   );
