@@ -368,18 +368,21 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
     setForcedPause(false);
     if (video.currentTime > subs[pos].start + 1) {
       video.currentTime = subs[pos].start;
+      setPos(pos);
     } else if (pos !== 0) {
-      video.currentTime = subs[pos - 1].start;
+      const previousPos = pos - 1;
+      video.currentTime = subs[previousPos].start;
+      setPos(previousPos);
     }
-    prepareTimeUpdate();
   };
 
   const handleNextButton = () => {
     setForcedPause(false);
     if (pos !== subs.length - 1) {
-      video.currentTime = subs[pos + 1].start;
+      const nextPos = pos + 1;
+      video.currentTime = subs[nextPos].start;
+      setPos(nextPos);
     }
-    prepareTimeUpdate();
   };
 
   useEffect(() => {
