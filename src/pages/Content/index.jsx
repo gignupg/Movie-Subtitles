@@ -8,7 +8,14 @@ let displayingExtension = false;
 // Wait for the popup message
 chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
   if (msg.activation) {
-    if (!displayingExtension) {
+    // Some sites replace the entire player DOM when switching episodes
+    // without a page reload, which removes the injected container. In that
+    // case the extension has to be re-attached and re-rendered.
+    const containerAttached = document.getElementById(
+      'npm-video-player-detector-container'
+    );
+
+    if (!displayingExtension || !containerAttached) {
       // Try to detect the video and display the subtitles
       const video = videoPlayerDetector('video');
       const container = videoPlayerDetector('container');

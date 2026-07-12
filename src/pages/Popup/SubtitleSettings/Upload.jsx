@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from '@material-ui/core/styles';
 import PublishIcon from '@material-ui/icons/Publish';
 import Button from '@material-ui/core/Button';
@@ -9,8 +9,11 @@ const InvisibleInput = styled('input')({
   display: 'none',
 });
 
+// Module-scoped so the listener survives re-renders of the content UI (e.g.
+// after an episode switch replaces the player DOM) without being duplicated
+let listening = false;
+
 const Upload = ({ popup, setMenu }) => {
-  const [listening, setListening] = useState(false);
 
   function invisibleUploadHandler(e) {
     const file = e.target.files[0];
@@ -31,10 +34,15 @@ const Upload = ({ popup, setMenu }) => {
   }
 
   if (!popup && !listening) {
-    setListening(true);
+    listening = true;
     chrome.runtime.onMessage.addListener((msg) => {
       if (msg.fileUpload) {
-        document.getElementById('movie-subtitles-file-upload').click();
+        // Looked up at message time because the input is re-created whenever
+        // the player DOM is replaced (e.g. after switching episodes)
+        const fileInput = document.getElementById(
+          'movie-subtitles-file-upload'
+        );
+        if (fileInput) fileInput.click();
       }
     });
   }
