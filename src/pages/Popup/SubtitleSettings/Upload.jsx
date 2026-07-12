@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { styled } from '@material-ui/core/styles';
 import PublishIcon from '@material-ui/icons/Publish';
 import Button from '@material-ui/core/Button';
@@ -14,6 +14,20 @@ const InvisibleInput = styled('input')({
 let listening = false;
 
 const Upload = ({ popup, setMenu }) => {
+  const fileInputRef = useRef(null);
+
+  // The invisible input lives inside the video player's DOM, so the click()
+  // used to open the file dialog bubbles into the player - and some players
+  // toggle play/pause on any click inside their area. Stop it at the source
+  // (native listener, since React's delegated handlers fire too late for
+  // listeners the player attached between the input and the root).
+  useEffect(() => {
+    const input = fileInputRef.current;
+    if (!input) return;
+    const stopClick = (e) => e.stopPropagation();
+    input.addEventListener('click', stopClick);
+    return () => input.removeEventListener('click', stopClick);
+  }, []);
 
   function invisibleUploadHandler(e) {
     const file = e.target.files[0];
@@ -51,6 +65,7 @@ const Upload = ({ popup, setMenu }) => {
     <Box mb={4} mt={2}>
       <Grid container justify="center" my={8}>
         <InvisibleInput
+          ref={fileInputRef}
           onChange={invisibleUploadHandler}
           type="file"
           id="movie-subtitles-file-upload"
