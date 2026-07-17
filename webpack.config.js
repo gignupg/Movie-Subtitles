@@ -5,7 +5,8 @@ var webpack = require('webpack'),
   { CleanWebpackPlugin } = require('clean-webpack-plugin'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
+  TerserPlugin = require('terser-webpack-plugin'),
+  packageInfo = require('./package.json');
 
 const ASSET_PATH = process.env.ASSET_PATH || '/';
 
@@ -126,11 +127,13 @@ var options = {
           force: true,
           transform: function (content, path) {
             // generates the manifest file using the package.json informations
+            const manifest = JSON.parse(content.toString());
+
             return Buffer.from(
               JSON.stringify({
-                description: process.env.npm_package_description,
-                version: process.env.npm_package_version,
-                ...JSON.parse(content.toString()),
+                ...manifest,
+                description: packageInfo.description,
+                version: packageInfo.version,
               })
             );
           },
