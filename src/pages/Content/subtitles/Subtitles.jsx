@@ -78,7 +78,7 @@ const SubtitleArea = styled('div')({
 });
 
 function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef }) {
-  const [forcedPause, setForcedPause] = useState(false);
+  const [shouldResumeOnMouseLeave, setShouldResumeOnMouseLeave] = useState(false);
   const subsRef = useRef([{ text: subtitles.text.default }]);
   const [subs, setSubs] = useState(subsRef.current);
   const currentOffsetRef = useRef(0);
@@ -353,19 +353,26 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
   const pauseHandler = () => {
     if (!video.paused) {
       video.pause();
-      setForcedPause(true);
+      setShouldResumeOnMouseLeave(true);
     }
   };
 
   const playHandler = () => {
-    if (forcedPause) {
+    if (shouldResumeOnMouseLeave) {
       video.play();
-      setForcedPause(false);
+      setShouldResumeOnMouseLeave(false);
     }
   };
 
+  const keepPausedAfterSentenceNavigation = () => {
+    // A different-length subtitle can resize the wrapper and move it out from
+    // under the pointer, triggering mouse leave without deliberate mouse movement.
+    // Keep the video paused so the user can navigate through several sentences.
+    setShouldResumeOnMouseLeave(false);
+  };
+
   const handlePrevButton = () => {
-    setForcedPause(false);
+    keepPausedAfterSentenceNavigation();
     if (video.currentTime > subs[pos].start + 1) {
       video.currentTime = subs[pos].start;
       setPos(pos);
@@ -377,7 +384,7 @@ function Subtitles({ video, subsEnabled, speedDisplay, netflix, disney, editRef 
   };
 
   const handleNextButton = () => {
-    setForcedPause(false);
+    keepPausedAfterSentenceNavigation();
     if (pos !== subs.length - 1) {
       const nextPos = pos + 1;
       video.currentTime = subs[nextPos].start;
